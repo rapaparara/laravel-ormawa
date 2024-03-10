@@ -14,3 +14,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', App\Livewire\Home\Index::class)->name('home');
+Route::get('/fasilitas', App\Livewire\Home\Fasilitas::class)->name('home.fasilitas');
+Route::get('/kegiatan', App\Livewire\Home\Kegiatan::class)->name('home.kegiatan');
+Route::get('/login', App\Livewire\Login::class)->name('login');
