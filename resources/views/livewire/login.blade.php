@@ -9,18 +9,25 @@
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Silakan masuk disini
             </h5>
             <div class="mt-3 max-w-md text-gray-700 dark:text-gray-400 font-normal">
-                <form class="mx-auto">
+                <x-flash-message />
+                <form wire:submit="login" class="mx-auto">
                     <div class="mb-5">
                         <label for="text" class="block mb-2 text-md font-medium">Username</label>
-                        <input type="text" id="username"
+                        <input wire:model="form.username" type="text" id="username"
                             class="bg-white border-gray-400 text-sm rounded-lg focus:ring-indigo-700 focus:border-indigo-700 block w-full p-2.5 "
-                            placeholder="Masukkan username anda disini.." required />
+                            placeholder="Masukkan username anda disini.." />
+                        @error('form.username')
+                            <small class="text-red-600 font-medium">{{ $message }}</small>
+                        @enderror
                     </div>
                     <div class="mb-5">
                         <label for="password" class="block mb-2 text-md font-medium">Password </label>
-                        <input type="password" id="password"
+                        <input wire:model="form.password" type="password" id="password"
                             class="bg-white border border-gray-400 text-sm rounded-lg focus:ring-indigo-700 focus:border-indigo-700 block w-full p-2.5"
-                            placeholder="Masukkan password anda disini.." required />
+                            placeholder="Masukkan password anda disini.." />
+                        @error('form.password')
+                            <small class="text-red-600 font-medium">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <button type="submit"

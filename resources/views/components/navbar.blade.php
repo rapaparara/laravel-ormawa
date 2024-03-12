@@ -6,9 +6,13 @@
                 class="self-center md:text-lg lg:text-2xl font-semibold whitespace-nowrap ">{{ config('app.name') }}</span>
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-            <a wire:navigate href="{{ route('login') }}"
-                class="text-gray-800 bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center block w-max mx-auto">Masuk</a>
-
+            @if (session('user_id'))
+                <a href="{{ route('logout') }}"
+                    class="text-gray-800 bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center block w-max mx-auto">Keluar</a>
+            @else
+                <a wire:navigate href="{{ route('login') }}"
+                    class="text-gray-800 bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center block w-max mx-auto">Masuk</a>
+            @endif
             <button data-collapse-toggle="navbar" type="button"
                 class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-50 rounded-lg md:hidden hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-gray-200 "
                 aria-controls="navbar" aria-expanded="false">
