@@ -5,7 +5,7 @@
                 class="block py-2 px-3 text-slate-50 rounded hover:text-indigo-200 md:p-0">Home</a>
         </li>
         <li>
-            <a wire:navigate href="{{ route('home') }}"
+            <a wire:navigate href="{{ route('admin.pengguna') }}"
                 class="block py-2 px-3 text-slate-50 rounded hover:text-indigo-200 md:p-0">Pengguna</a>
         </li>
     @endif

@@ -15,6 +15,7 @@ Route::prefix('/')->middleware(IsNotLogin::class)->group(function () {
 });
 Route::prefix('admin')->middleware(IsAdmin::class)->group(function () {
           Route::get('/', \App\Livewire\Admin\Index::class)->name('admin.index');
+          Route::get('/pengguna', \App\Livewire\Admin\Pengguna::class)->name('admin.pengguna');
 });
 Route::prefix('kemahasiswaan')->middleware(IsKemahasiswaan::class)->group(function () {
           Route::get('/', \App\Livewire\Kemahasiswaan\Index::class)->name('kemahasiswaan.index');
