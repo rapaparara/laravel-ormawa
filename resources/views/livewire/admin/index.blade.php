@@ -1,19 +1,20 @@
 <div>
     <div class="">
-        <div class="bg-gray-50 mx-3 px-4 py-5 rounded-lg shadow-sm">
-            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-home"></i>
-                Home Admin
-            </h1>
-        </div>
-        <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Home Admin
-            </h5>
-            <div class="my-3">
-                <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <h5 class="text-2xl font-semibold tracking-tight text-gray-700 dark:text-white"><i
-                            class="me-2 fa-solid fa-users"></i>Jumlah Pengguna Total</h5>
+        <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-700 border border-gray-200 rounded-lg shadow-sm">
+            <section class="bg-gray-50">
+                <div class="py-8 px-4 mx-auto max-w-screen-xl  text-center lg:py-16">
+                    <h1
+                        class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-indigo-800 md:text-5xl lg:text-6xl">
+                        Selamat datang Admin!</h1>
+                    <p class="mb-3 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48">
+                        "Jadilah tiang kokoh yang menjaga sistem berjalan lancar. Setiap tindakanmu,
+                        setiap keputusanmu, membentuk jalan bagi kemajuan. Dalam setiap tugasmu, letakkan kepercayaan
+                        dan dedikasi. Kau adalah pahlawan yang tak terlihat namun begitu penting."</p>
+                    <p class="mb-8 text-lg font-semibold text-gray-500 lg:text-xl sm:px-16 lg:px-48">
+                        SiOrmawa UNG 2024</p>
                 </div>
-            </div>
+            </section>
+
         </div>
     </div>
 </div>

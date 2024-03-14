@@ -1,13 +1,14 @@
 <div>
     <div class="">
         <div class="bg-gray-50 mx-3 px-4 py-5 rounded-lg shadow-sm">
-            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-user"></i>
-                Pengguna
+            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-users"></i>
+                Kemahasiswaan
             </h1>
         </div>
         <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm">
             <div class="flex flex-wrap">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Manajemen pengguna
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Manajemen user
+                    kemahasiswaan
                 </h5>
                 <button wire:click="editStateModal()" data-modal-target="tambah-modal" data-modal-toggle="tambah-modal"
                     class="mb-2 ms-auto py-2 px-3 rounded-lg bg-green-500 text-white font-bold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform
@@ -17,12 +18,6 @@
                 </button>
             </div>
             <x-flash-message />
-            <div class="flex flex-nowrap">
-                <i class="py-2 me-2 text-2xl fa-solid fa-search"></i>
-                <input wire:model.live="katakunci" type="text"
-                    class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 md:w-64  p-2.5"
-                    placeholder="Search...">
-            </div>
             <div class="mt-3 relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-700">
                     <thead class="text-xs text-gray-50 uppercase bg-indigo-700">
@@ -31,13 +26,10 @@
                                 No
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Nama
+                                Nama Pengguna
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Username
-                            </th>
-                            <th scope="col" class="px-3 py-2">
-                                Role
+                                Fakultas
                             </th>
                             <th scope="col" class="w-56 px-3 py-2">
                                 Aksi
@@ -45,19 +37,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($dataPengguna as $key => $value)
+                        @foreach ($dataKemahasiswaan as $key => $value)
                             <tr class="bg-white border-b ">
                                 <th scope="row" class="px-6 py-4">
-                                    {{ $dataPengguna->firstItem() + $key }}
+                                    {{ $dataKemahasiswaan->firstItem() + $key }}
                                 </th>
                                 <td class="px-3 py-2">
-                                    {{ $value->name }}
+                                    {{ $value->user->name }}
                                 </td>
                                 <td class="px-3 py-2">
-                                    {{ $value->username }}
-                                </td>
-                                <td class="px-3 py-2">
-                                    {{ $value->role }}
+                                    {{ $value->fakultas->name }}
                                 </td>
                                 <td class="px-3 py-2">
                                     <div class="flex flex-wrap">
@@ -77,7 +66,7 @@
                     </tbody>
                 </table>
                 <div class="mt-3">
-                    <div class="livewire-pagination"> {{ $dataPengguna->links() }}</div>
+                    <div class="livewire-pagination"> {{ $dataKemahasiswaan->links() }}</div>
                 </div>
             </div>
         </div>
@@ -91,14 +80,13 @@
             <div class="relative bg-gray-50 rounded-lg shadow">
                 <!-- Modal header -->
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-
                     @if ($editModal == true)
                         <h3 class="text-xl font-semibold text-gray-700 ">
-                            Edit Pengguna
+                            Edit Kemahasiswaan
                         </h3>
                     @else
                         <h3 class="text-xl font-semibold text-gray-700 ">
-                            Tambah Pengguna
+                            Tambah Kemahasiswaan
                         </h3>
                     @endif
                     <button type="button"
@@ -115,59 +103,33 @@
                             <form wire:submit="save" class="space-y-4">
                     @endif
                     <div>
-                        <label for="name"
-                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Nama</label>
-                        <input wire:model="form.name" type="text" name="name" id="name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Masukkan nama disini" required />
-                        @error('form.name')
-                            <small class="text-red-600 font-medium">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="username"
-                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Username</label>
-                        <input wire:model="form.username" type="text" name="username" id="username"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Masukkan username disini" required />
-                        @error('form.username')
-                            <small class="text-red-600 font-medium">{{ $message }}</small>
-                        @enderror
-                    </div>
-                    @if ($editModal == true)
-                        <div>
-                            <label for="password"
-                                class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Password</label>
-                            <input wire:model="form.password_temp" type="password" name="password" id="password"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Masukkan password disini" />
-                            @error('form.password')
-                                <small class="text-red-600 font-medium">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    @else
-                        <div>
-                            <label for="password"
-                                class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Password</label>
-                            <input wire:model="form.password" type="password" name="password" id="password"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="Masukkan password disini" required />
-                            @error('form.password')
-                                <small class="text-red-600 font-medium">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    @endif
-                    <div>
-                        <label for="role"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
-                            Role</label>
-                        <select wire:model="form.role" id="role"
+                        <label for="user_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                            Pengguna</label>
+                        <select wire:model="form.user_id" id="user_id"
                             class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                            <option value="">Pilih Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="kemahasiswaan">Kemahasiswaan</option>
+                            <option value="">Pilih Pengguna</option>
+                            @foreach ($dataUsers as $key => $value)
+                                <option value="{{ $value->id }}">
+                                    {{ $value->name }} ( {{ $value->username }} )
+                                </option>
+                            @endforeach
                         </select>
-                        @error('form.role')
+                        @error('form.user_id')
+                            <small class="text-red-600 font-medium">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="fakultas_id"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                            Pengguna</label>
+                        <select wire:model="form.fakultas_id" id="fakultas_id"
+                            class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="">Pilih Fakultas</option>
+                            @foreach ($dataFakultas as $key => $value)
+                                <option value="{{ $value->id }}">{{ $value->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('form.fakultas_id')
                             <small class="text-red-600 font-medium">{{ $message }}</small>
                         @enderror
                     </div>
@@ -183,10 +145,10 @@
                     </button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
+
 
     <div wire:ignore.self id="hapus-modal" tabindex="-1"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">

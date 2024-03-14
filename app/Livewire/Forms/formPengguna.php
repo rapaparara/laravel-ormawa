@@ -67,7 +67,6 @@ class formPengguna extends Form
         $this->role = $data->role;
         $this->password = $data->password;
     }
-
     public function delete($id)
     {
         $data = User::findOrFail($id);
