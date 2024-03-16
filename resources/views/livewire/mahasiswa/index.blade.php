@@ -2,7 +2,7 @@
     <div>
         <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-700 border border-gray-200 rounded-lg shadow-sm">
             <section class="bg-gray-50">
-                <div class="py-8 px-4 mx-auto max-w-screen-xl  text-center lg:py-16">
+                <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
                     <h1
                         class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-indigo-800 md:text-5xl lg:text-6xl">
                         Selamat datang Mahasiswa!</h1>

@@ -1,13 +1,13 @@
 <div>
     <div class="">
         <div class="bg-gray-50 mx-3 px-4 py-5 rounded-lg shadow-sm">
-            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-calendar"></i>
-                Periode
+            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-person"></i>
+                Ormawa
             </h1>
         </div>
         <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm">
             <div class="flex flex-wrap">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Manajemen periode
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Manajemen ormawa
                 </h5>
                 <button wire:click="editStateModal()" data-modal-target="tambah-modal" data-modal-toggle="tambah-modal"
                     class="mb-2 ms-auto py-2 px-3 rounded-lg bg-green-500 text-white font-bold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform
@@ -31,13 +31,13 @@
                                 No
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Periode
+                                Nama Ormawa
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Created At
+                                Type
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Updated At
+                                Fakultas
                             </th>
                             <th scope="col" class="w-56 px-3 py-2">
                                 Aksi
@@ -45,20 +45,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($dataPeriode as $key => $value)
+                        @foreach ($dataOrmawa as $key => $value)
                             <tr class="bg-white border-b ">
                                 <th scope="row" class="px-6 py-4">
-                                    {{ $dataPeriode->firstItem() + $key }}
+                                    {{ $dataOrmawa->firstItem() + $key }}
                                 </th>
                                 <td class="px-3 py-2">
                                     {{ $value->name }}
                                 </td>
                                 <td class="px-3 py-2">
-                                    {{ $value->created_at }}
+                                    @php
+                                        switch ($value->type) {
+                                            case 'hmps':
+                                                echo 'Himpunan Mahasiswa Program Studi';
+                                                break;
+                                            case 'hmj':
+                                                echo 'Himpunan Mahasiswa Jurusan';
+                                                break;
+                                            case 'ukf':
+                                                echo 'Unit Kegiatan Fakultas';
+                                                break;
+                                            case 'sema':
+                                                echo 'Senat Mahasiswa';
+                                                break;
+                                            default:
+                                                echo 'KOSONG';
+                                        }
+                                    @endphp
                                 </td>
                                 <td class="px-3 py-2">
-                                    {{ $value->updated_at }}
+                                    {{ $value->fakultas->name }}
                                 </td>
+
                                 <td class="px-3 py-2">
                                     <div class="flex flex-wrap">
                                         <a wire:click.prevent="edit('{{ $value->id }}')"
@@ -77,7 +95,7 @@
                     </tbody>
                 </table>
                 <div class="mt-3">
-                    <div class="livewire-pagination"> {{ $dataPeriode->links() }}</div>
+                    <div class="livewire-pagination"> {{ $dataOrmawa->links() }}</div>
                 </div>
             </div>
         </div>
@@ -93,11 +111,11 @@
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     @if ($editModal == true)
                         <h3 class="text-xl font-semibold text-gray-700 ">
-                            Edit Periode
+                            Edit Ormawa
                         </h3>
                     @else
                         <h3 class="text-xl font-semibold text-gray-700 ">
-                            Tambah Periode
+                            Tambah Ormawa
                         </h3>
                     @endif
                     <button type="button"
@@ -114,17 +132,27 @@
                             <form wire:submit="save" class="space-y-4">
                     @endif
                     <div>
-                        <label for="name"
-                            class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Masukkan
-                            Periode</label>
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Nama
+                            Ormawa</label>
                         <input wire:model="form.name" type="text" name="name" id="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="2021/2022" required />
-                        <p><small class="text-gray-600 italic">Contoh penulisan periode : <span
-                                    class="font-semibold">2017/2018</span> atau <span
-                                    class="font-semibold">2019/2020</span></small></p>
-
+                            placeholder="Masukkan nama disini" required />
                         @error('form.name')
+                            <small class="text-red-600 font-medium">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                            Type</label>
+                        <select wire:model="form.type" id="type"
+                            class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="">Pilih Type</option>
+                            <option value="hmps">HMPS</option>
+                            <option value="hmj">HMJ</option>
+                            <option value="ukf">UKF</option>
+                            <option value="sema">Senat Mahasiswa</option>
+                        </select>
+                        @error('form.type')
                             <small class="text-red-600 font-medium">{{ $message }}</small>
                         @enderror
                     </div>
@@ -168,7 +196,7 @@
                     <form wire:submit="deleteConfirm">
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Anda yakin ingin
                             menghapus
-                            periode ini?</h3>
+                            ormawa ini?</h3>
                         <button data-modal-hide="hapus-modal" type="submit"
                             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                             Iya, Hapus

@@ -7,10 +7,13 @@ use App\Http\Middleware\IsMahasiswa;
 use App\Http\Middleware\IsNotLogin;
 use Illuminate\Support\Facades\Route;
 
+
+
+Route::get('/fasilitas', App\Livewire\Home\Fasilitas::class)->name('home.fasilitas');
+Route::get('/kegiatan', App\Livewire\Home\Kegiatan::class)->name('home.kegiatan');
+
 Route::prefix('/')->middleware(IsNotLogin::class)->group(function () {
           Route::get('/', App\Livewire\Home\Index::class)->name('home');
-          Route::get('/fasilitas', App\Livewire\Home\Fasilitas::class)->name('home.fasilitas');
-          Route::get('/kegiatan', App\Livewire\Home\Kegiatan::class)->name('home.kegiatan');
           Route::get('/login', App\Livewire\Login::class)->name('login');
 });
 Route::prefix('admin')->middleware(IsAdmin::class)->group(function () {
@@ -22,6 +25,8 @@ Route::prefix('admin')->middleware(IsAdmin::class)->group(function () {
 });
 Route::prefix('kemahasiswaan')->middleware(IsKemahasiswaan::class)->group(function () {
           Route::get('/', \App\Livewire\Kemahasiswaan\Index::class)->name('kemahasiswaan.index');
+          Route::get('/ormawa', \App\Livewire\Kemahasiswaan\Ormawa::class)->name('kemahasiswaan.ormawa');
+          Route::get('/pengguna', \App\Livewire\Kemahasiswaan\Pengguna::class)->name('kemahasiswaan.pengguna');
 });
 Route::prefix('mahasiswa')->middleware(IsMahasiswa::class)->group(function () {
           Route::get('/', \App\Livewire\Mahasiswa\Index::class)->name('mahasiswa.index');

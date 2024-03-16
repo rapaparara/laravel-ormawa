@@ -7,8 +7,29 @@
         </a>
         <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
             @if (session('user_id'))
-                <a href="{{ route('logout') }}"
-                    class="text-gray-800 bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center block w-max mx-auto transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl">Keluar</a>
+                <span class="my-auto me-3 font-semibold text-sm hidden lg:block ">{{ session('name') }}</span>
+                <button type="button" class="flex text-md rounded-full md:me-2 my-auto" id="user-menu-button"
+                    aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-10 h-10 rounded-full"
+                        src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                        alt="{{ session('username') }}">
+                </button>
+                <!-- Dropdown menu -->
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span class="block text-sm text-gray-900 dark:text-white">{{ session('name') }}</span>
+                        <span
+                            class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ session('username') }}</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="{{ route('logout') }}"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Keluar</a>
+                        </li>
+                    </ul>
+                </div>
             @else
                 <a wire:navigate href="{{ route('login') }}"
                     class="text-gray-800 bg-gray-50 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center block w-max mx-auto transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl">Masuk</a>

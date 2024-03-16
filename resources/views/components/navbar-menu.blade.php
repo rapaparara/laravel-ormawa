@@ -27,11 +27,11 @@
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Home</a>
         </li>
         <li>
-            <a href="{{ route('home') }}"
+            <a href="{{ route('kemahasiswaan.ormawa') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Ormawa</a>
         </li>
         <li>
-            <a href="{{ route('home') }}"
+            <a href="{{ route('kemahasiswaan.pengguna') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Pengguna</a>
         </li>
         <li>

@@ -5,10 +5,13 @@
                     class="fa-solid fa-right-to-bracket"></i> Halaman Masuk
             </h1>
         </div>
-        <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Silakan masuk disini
+        <div class="mx-auto max-w-lg my-8 p-7 bg-gray-50 text-gray-800 border border-gray-200 rounded-xl shadow-md">
+            <h5 class="mb-6 text-center text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">
+                </i>Silakan
+                masuk
+                disini
             </h5>
-            <div class="mt-3 max-w-md text-gray-700 dark:text-gray-400 font-normal">
+            <div class="mt-3 mx-auto max-w-md text-gray-700 dark:text-gray-400 font-normal">
                 <x-flash-message />
                 <form wire:submit="login" class="mx-auto">
                     <div class="mb-5">
@@ -29,9 +32,10 @@
                             <small class="text-red-600 font-medium">{{ $message }}</small>
                         @enderror
                     </div>
-
-                    <button type="submit"
-                        class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Masuk</button>
+                    <div class="text-center">
+                        <button type="submit"
+                            class="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-6 py-2.5 text-center">Masuk</button>
+                    </div>
                 </form>
 
             </div>
