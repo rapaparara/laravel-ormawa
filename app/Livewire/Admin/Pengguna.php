@@ -5,12 +5,14 @@ namespace App\Livewire\Admin;
 use App\Livewire\Forms\formPengguna;
 use App\Models\User;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 
 class Pengguna extends Component
 {
+    #[Title('Manajemen Pengguna')]
     public $katakunci = '';
     public formPengguna $form;
     use WithPagination;

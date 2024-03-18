@@ -5,11 +5,13 @@ namespace App\Livewire\Admin;
 use App\Livewire\Forms\formPeriode;
 use App\Models\periode as ModelsPeriode;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Periode extends Component
 {
+    #[Title('Manajemen Periode')]
     public $katakunci = '';
     public formPeriode $form;
     use WithPagination;

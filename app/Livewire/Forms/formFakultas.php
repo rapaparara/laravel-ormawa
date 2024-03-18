@@ -52,7 +52,6 @@ class formFakultas extends Form
         flash('Fakultas berhasil dihapus.',  'bg-green-100 text-green-800');
         $this->reset();
     }
-
     public function clear()
     {
         $this->name = '';

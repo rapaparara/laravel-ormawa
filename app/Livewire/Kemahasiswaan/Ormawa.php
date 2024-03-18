@@ -6,11 +6,13 @@ use App\Livewire\Forms\formOrmawa;
 use App\Models\ormawa as ModelsOrmawa;
 use App\Models\users_kemahasiswaan as ModelsKemahasiswaan;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Ormawa extends Component
 {
+    #[Title('Manajemen Ormawa')]
     public $katakunci = '';
     public formOrmawa $form;
     use WithPagination;

@@ -10,11 +10,13 @@ use App\Models\users_kemahasiswaan;
 use App\Models\users_ormawa as ModelsPengguna;
 use App\Models\users_ormawa;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Pengguna extends Component
 {
+    #[Title('Manajemen Pengguna Ormawa')]
     public formPenggunaOrmawa $form;
     use WithPagination;
     protected $paginationTheme = 'simple-tailwind';

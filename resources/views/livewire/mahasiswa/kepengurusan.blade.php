@@ -1,14 +1,13 @@
 <div>
     <div class="">
         <div class="bg-gray-50 mx-3 px-4 py-5 rounded-lg shadow-sm">
-            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-building"></i>
-                Fasilitas
+            <h1 class="px-2 ps-4 text-indigo-900 text-4xl font-bold drop-shadow-sm "><i class="fa-solid fa-peoples"></i>
+                Kepengurusan
             </h1>
         </div>
-        @livewire('pengajuan-fasilitas');
-        <div class="mx-6 p-5 bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm">
+        <div class="mx-6 mt-4 p-5 bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm">
             <div class="flex flex-wrap">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Manajemen fasilitas
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Manajemen Kepengurusan
                 </h5>
                 <button wire:click="editStateModal()" data-modal-target="tambah-modal" data-modal-toggle="tambah-modal"
                     class="mb-2 ms-auto py-2 px-3 rounded-lg bg-green-500 text-white font-bold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform
@@ -18,12 +17,6 @@
                 </button>
             </div>
             <x-flash-message />
-            <div class="flex flex-nowrap">
-                <i class="py-2 me-2 text-2xl fa-solid fa-search"></i>
-                <input wire:model.live="katakunci" type="text"
-                    class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 md:w-64  p-2.5"
-                    placeholder="Search...">
-            </div>
             <div class="mt-3 relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-700">
                     <thead class="text-xs text-gray-50 uppercase bg-indigo-700">
@@ -32,10 +25,16 @@
                                 No
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Nama Fasilitas
+                                Periode Kepengurusan
                             </th>
                             <th scope="col" class="px-3 py-2">
-                                Nama Fakultas
+                                Nama Ormawa
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                File SK
+                            </th>
+                            <th scope="col" class="px-3 py-2">
+                                Status
                             </th>
                             <th scope="col" class="w-56 px-3 py-2">
                                 Aksi
@@ -43,16 +42,38 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($dataFasilitas as $key => $value)
+                        @foreach ($dataKepengurusan as $key => $value)
                             <tr class="bg-white border-b ">
                                 <th scope="row" class="px-6 py-4">
-                                    {{ $dataFasilitas->firstItem() + $key }}
+                                    {{ $dataKepengurusan->firstItem() + $key }}
                                 </th>
                                 <td class="px-3 py-2">
-                                    {{ $value->name }}
+                                    {{ $value->periode->name }}
                                 </td>
                                 <td class="px-3 py-2">
-                                    {{ $value->fakultas->name }}
+                                    {{ $value->ormawa->name }}
+                                </td>
+                                <td class="px-3 py-2">
+                                    <button wire:click.prevent="lihat('{{ $value->file_sk }}')"
+                                        data-modal-target="lihat-modal" data-modal-toggle="lihat-modal"
+                                        class="mb-2 me-2 py-2 px-3 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                                        type="button">
+                                        <i class="me-2 fa-solid fa-eye"></i>Lihat
+                                    </button>
+                                </td>
+                                <td class="px-3 py-2">
+                                    @if ($value->status === 'belum')
+                                        <span
+                                            class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Menunggu</span>
+                                    @endif
+                                    @if ($value->status === 'tolak')
+                                        <span
+                                            class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Ditolak</span>
+                                    @endif
+                                    @if ($value->status === 'setujui')
+                                        <span
+                                            class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Disetujui</span>
+                                    @endif
                                 </td>
                                 <td class="px-3 py-2">
                                     <div class="flex flex-wrap">
@@ -72,7 +93,7 @@
                     </tbody>
                 </table>
                 <div class="mt-3">
-                    <div class="livewire-pagination"> {{ $dataFasilitas->links() }}</div>
+                    <div class="livewire-pagination"> {{ $dataKepengurusan->links() }}</div>
                 </div>
             </div>
         </div>
@@ -88,11 +109,11 @@
                 <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                     @if ($editModal == true)
                         <h3 class="text-xl font-semibold text-gray-700 ">
-                            Edit Fasilitas
+                            Edit Periode Kepengurusan
                         </h3>
                     @else
                         <h3 class="text-xl font-semibold text-gray-700 ">
-                            Tambah Fasilitas
+                            Tambah Periode Kepengurusan
                         </h3>
                     @endif
                     <button type="button"
@@ -109,12 +130,33 @@
                             <form wire:submit="save" class="space-y-4">
                     @endif
                     <div>
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-700 dark:text-white">Nama
-                            Fasilitas</label>
-                        <input wire:model="form.name" type="text" name="name" id="name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="Masukkan nama disini" required />
-                        @error('form.name')
+                        <label for="periode_id"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                            Periode</label>
+                        <select wire:model="periode_id" id="periode_id"
+                            class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="">Pilih Periode</option>
+                            @foreach ($dataPeriode as $key => $value)
+                                <option value="{{ $value->id }}">{{ $value->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('periode_id')
+                            <small class="text-red-600 font-medium">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="file_sk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File
+                            SK</label>
+                        <input type="file" wire:model="file_sk" accept=".pdf"
+                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                        <p class="mt-1
+                            text-sm text-gray-500 dark:text-gray-300"
+                            id="file_input_help">File PDF (Maksimal
+                            2MB).</p>
+                        <div wire:loading wire:target="file_sk"
+                            class="px-3 py-1 text-sm font-medium leading-none text-center text-green-800 bg-green-200 rounded-lg animate-pulse">
+                            Sedang mengupload file...</div>
+                        @error('file_sk')
                             <small class="text-red-600 font-medium">{{ $message }}</small>
                         @enderror
                     </div>
@@ -157,7 +199,7 @@
                     <form wire:submit="deleteConfirm">
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Anda yakin ingin
                             menghapus
-                            fasilitas ini?</h3>
+                            periode kepengurusan ini?</h3>
                         <button data-modal-hide="hapus-modal" type="submit"
                             class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
                             Iya, Hapus
@@ -165,6 +207,36 @@
                         <button data-modal-hide="hapus-modal" type="button"
                             class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Batal</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main modal -->
+    <div wire:ignore.self id="lihat-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-h-full">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                        File SK
+                    </h3>
+                    <button type="button"
+                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                        data-modal-hide="lihat-modal">
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-4 md:p-5 space-y-4">
+                    <embed class="w-full h-screen" src="{{ asset('storage/' . $embed_file_sk) }}">
                 </div>
             </div>
         </div>

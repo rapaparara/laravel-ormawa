@@ -5,11 +5,13 @@ namespace App\Livewire\Admin;
 use App\Livewire\Forms\formFakultas;
 use App\Models\fakultas as ModelsFakultas;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Fakultas extends Component
 {
+    #[Title('Manajemen Fakultas')]
     public $katakunci = '';
     public formFakultas $form;
     use WithPagination;

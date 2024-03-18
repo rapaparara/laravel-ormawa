@@ -32,6 +32,7 @@ Route::prefix('kemahasiswaan')->middleware(IsKemahasiswaan::class)->group(functi
 Route::prefix('mahasiswa')->middleware(IsMahasiswa::class)->group(function () {
           Route::get('/', \App\Livewire\Mahasiswa\Index::class)->name('mahasiswa.index');
           Route::get('/fasilitas', \App\Livewire\Mahasiswa\Fasilitas::class)->name('mahasiswa.fasilitas');
+          Route::get('/kepengurusan', \App\Livewire\Mahasiswa\Kepengurusan::class)->name('mahasiswa.kepengurusan');
 });
 
 Route::get('/logout', [logout::class, 'logout'])->name('logout');

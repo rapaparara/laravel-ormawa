@@ -6,11 +6,13 @@ use App\Livewire\Forms\formFasilitas;
 use App\Models\fasilitas as ModelsFasilitas;
 use App\Models\users_kemahasiswaan as ModelsKemahasiswaan;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Fasilitas extends Component
 {
+    #[Title('Manajemen Fasilitas')]
     public $katakunci = '';
     public formFasilitas $form;
     use WithPagination;

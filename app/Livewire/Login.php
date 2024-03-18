@@ -6,9 +6,11 @@ use App\Livewire\Forms\loginForm;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Support\Facades\Session;
+use Livewire\Attributes\Title;
 
 class Login extends Component
 {
+    #[Title('Halaman Login')]
     public loginForm $form;
     public function login()
     {

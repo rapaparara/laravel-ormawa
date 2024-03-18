@@ -8,11 +8,13 @@ use App\Models\users_ormawa as ModelsUsersOrmawa;
 use App\Models\ormawa as ModelsOrmawa;
 use App\Models\peminjaman_fasilitas as ModelsPeminjaman;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Fasilitas extends Component
 {
+    #[Title('Peminjaman Fasilitas')]
     public formFasilitasMahasiswa $form;
     use WithPagination;
     protected $paginationTheme = 'simple-tailwind';

@@ -7,11 +7,13 @@ use App\Models\fakultas;
 use App\Models\User;
 use App\Models\users_kemahasiswaan;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Kemahasiswaan extends Component
 {
+    #[Title('Manajemen Pengguna Kemahasiswaan')]
     public formKemahasiswaan $form;
     use WithPagination;
     protected $paginationTheme = 'simple-tailwind';

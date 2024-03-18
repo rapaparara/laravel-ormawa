@@ -59,7 +59,7 @@
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Ormawa</a>
         </li>
         <li>
-            <a href="{{ route('home') }}"
+            <a href="{{ route('mahasiswa.kepengurusan') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Kepengurusan</a>
         </li>
         <li>
