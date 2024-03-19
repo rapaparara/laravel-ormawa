@@ -44,7 +44,7 @@
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Fasilitas</a>
         </li>
         <li>
-            <a href="{{ route('home') }}"
+            <a href="{{ route('kemahasiswaan.kegiatan') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Kegiatan
             </a>
         </li>
@@ -59,7 +59,7 @@
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Kepengurusan</a>
         </li>
         <li>
-            <a href="{{ route('home') }}"
+            <a href="{{ route('mahasiswa.kegiatan') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Kegiatan</a>
         </li>
         <li>

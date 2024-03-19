@@ -29,11 +29,13 @@ Route::prefix('kemahasiswaan')->middleware(IsKemahasiswaan::class)->group(functi
           Route::get('/pengguna', \App\Livewire\Kemahasiswaan\Pengguna::class)->name('kemahasiswaan.pengguna');
           Route::get('/fasilitas', \App\Livewire\Kemahasiswaan\Fasilitas::class)->name('kemahasiswaan.fasilitas');
           Route::get('/kepengurusan', \App\Livewire\Kemahasiswaan\Kepengurusan::class)->name('kemahasiswaan.kepengurusan');
+          Route::get('/kegiatan', \App\Livewire\Kemahasiswaan\Kegiatan::class)->name('kemahasiswaan.kegiatan');
 });
 Route::prefix('mahasiswa')->middleware(IsMahasiswa::class)->group(function () {
           Route::get('/', \App\Livewire\Mahasiswa\Index::class)->name('mahasiswa.index');
           Route::get('/fasilitas', \App\Livewire\Mahasiswa\Fasilitas::class)->name('mahasiswa.fasilitas');
           Route::get('/kepengurusan', \App\Livewire\Mahasiswa\Kepengurusan::class)->name('mahasiswa.kepengurusan');
+          Route::get('/kegiatan', \App\Livewire\Mahasiswa\Kegiatan::class)->name('mahasiswa.kegiatan');
 });
 
 Route::get('/logout', [logout::class, 'logout'])->name('logout');
