@@ -5,8 +5,6 @@
                 Kepengurusan
             </h1>
         </div>
-
-
         @livewire('kepengurusan');
     </div>
 </div>

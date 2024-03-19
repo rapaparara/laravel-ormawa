@@ -28,6 +28,7 @@ Route::prefix('kemahasiswaan')->middleware(IsKemahasiswaan::class)->group(functi
           Route::get('/ormawa', \App\Livewire\Kemahasiswaan\Ormawa::class)->name('kemahasiswaan.ormawa');
           Route::get('/pengguna', \App\Livewire\Kemahasiswaan\Pengguna::class)->name('kemahasiswaan.pengguna');
           Route::get('/fasilitas', \App\Livewire\Kemahasiswaan\Fasilitas::class)->name('kemahasiswaan.fasilitas');
+          Route::get('/kepengurusan', \App\Livewire\Kemahasiswaan\Kepengurusan::class)->name('kemahasiswaan.kepengurusan');
 });
 Route::prefix('mahasiswa')->middleware(IsMahasiswa::class)->group(function () {
           Route::get('/', \App\Livewire\Mahasiswa\Index::class)->name('mahasiswa.index');
