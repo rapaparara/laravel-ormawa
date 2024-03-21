@@ -54,7 +54,7 @@ class Kemahasiswaan extends Component
     }
     public function render()
     {
-        $data_kemahasiswaan = users_kemahasiswaan::orderBy('fakultas_id')->paginate(10);
+        $data_kemahasiswaan = users_kemahasiswaan::orderBy('updated_at', 'desc')->paginate(10);
         $data_users = User::orderBy('name')->where('role', 'kemahasiswaan')->get();
         $data_fakultas = fakultas::orderBy('name')->get();
         return view('livewire.admin.kemahasiswaan', [

@@ -85,15 +85,22 @@
                                 </td>
                                 <td class="px-3 py-2">
                                     <div class="flex flex-wrap">
-                                        <a wire:click.prevent="edit('{{ $value->id }}')"
-                                            class="mb-2 me-2 py-2 px-3 rounded-lg bg-yellow-300 text-white font-bold hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-yellow-200 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                                            href="#" data-modal-toggle="tambah-modal">
-                                            <i class="me-2 fa-solid fa-pencil"></i>Edit</a>
-                                        <a wire:click.prevent="delete('{{ $value->id }}')"
-                                            class="mb-2 me-2 py-2 px-3 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                                            href="#" data-modal-target="hapus-modal"
-                                            data-modal-toggle="hapus-modal">
-                                            <i class="me-2 fa-solid fa-trash"></i>Hapus</a>
+                                        @if ($value->status == 'belum')
+                                            <a wire:click.prevent="edit('{{ $value->id }}')"
+                                                class="mb-2 me-2 py-2 px-3 rounded-lg bg-yellow-300 text-white font-bold hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-yellow-200 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                                                href="#" data-modal-toggle="tambah-modal">
+                                                <i class="me-2 fa-solid fa-pencil"></i>Edit</a>
+                                            <a wire:click.prevent="delete('{{ $value->id }}')"
+                                                class="mb-2 me-2 py-2 px-3 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                                                href="#" data-modal-target="hapus-modal"
+                                                data-modal-toggle="hapus-modal">
+                                                <i class="me-2 fa-solid fa-trash"></i>Hapus</a>
+                                        @else
+                                            <span
+                                                class="status-badge bg-green-500 text-white text-s font-medium me-2 px-2.5 py-0.5 rounded-md">
+                                                Verifikasi<i class="ms-2 fa-solid fa-check"></i>
+                                            </span>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

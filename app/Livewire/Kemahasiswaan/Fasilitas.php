@@ -57,11 +57,11 @@ class Fasilitas extends Component
         $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
         $fakultas_id = $fakultas[0]->fakultas_id;
         if ($this->katakunci != null) {
-            $data = ModelsFasilitas::orderBy('id')
+            $data = ModelsFasilitas::orderBy('updated_at', 'desc')
                 ->where('fakultas_id', $fakultas_id)
                 ->where('name', 'like', '%' . $this->katakunci . '%')
                 ->paginate(5);
-        } else $data = ModelsFasilitas::orderBy('id')->where('fakultas_id', $fakultas_id)->paginate(5);
+        } else $data = ModelsFasilitas::orderBy('updated_at', 'desc')->where('fakultas_id', $fakultas_id)->paginate(5);
         return view('livewire.kemahasiswaan.fasilitas', ['dataFasilitas' => $data]);
     }
 }

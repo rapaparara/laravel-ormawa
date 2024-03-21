@@ -54,10 +54,10 @@ class Fakultas extends Component
     public function render()
     {
         if ($this->katakunci != null) {
-            $data = ModelsFakultas::orderBy('id')
+            $data = ModelsFakultas::orderBy('updated_at', 'desc')
                 ->where('name', 'like', '%' . $this->katakunci . '%')
                 ->paginate(10);
-        } else $data = ModelsFakultas::orderBy('id')->paginate(10);
+        } else $data = ModelsFakultas::orderBy('updated_at', 'desc')->paginate(10);
         return view('livewire.admin.fakultas', ['dataFakultas' => $data]);
     }
 }

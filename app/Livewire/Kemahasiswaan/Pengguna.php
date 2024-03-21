@@ -62,7 +62,7 @@ class Pengguna extends Component
         $data_pengguna = ModelsPengguna::with('ormawa')
             ->whereHas('ormawa', function ($query) use ($fakultas_id) {
                 $query->where('fakultas_id', $fakultas_id);
-            })
+            })->orderBy('updated_at', 'desc')
             ->paginate(10);
         return view('livewire.kemahasiswaan.pengguna', [
             'dataPengguna' => $data_pengguna,

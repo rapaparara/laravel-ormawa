@@ -20,6 +20,10 @@ class periode_kepengurusan extends Model
     {
         return $this->belongsTo(ormawa::class, 'ormawa_id');
     }
+    public function fakultas(): BelongsTo
+    {
+        return $this->belongsTo(ormawa::class, 'ormawa_id')->with('fakultas')->withDefault();
+    }
 
     public function periode(): BelongsTo
     {

@@ -6,5 +6,6 @@
             </h1>
         </div>
         @livewire('kepengurusan');
+        @livewire('pengurus');
     </div>
 </div>

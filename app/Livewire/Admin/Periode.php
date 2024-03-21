@@ -53,7 +53,7 @@ class Periode extends Component
     }
     public function render()
     {
-        $data = ModelsPeriode::orderBy('id')->paginate(10);
+        $data = ModelsPeriode::orderBy('updated_at', 'desc')->paginate(10);
         return view('livewire.admin.periode', ['dataPeriode' => $data]);
     }
 }

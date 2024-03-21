@@ -13,7 +13,7 @@ class formPengguna extends Form
 {
     #[Rule(['required', 'string', 'min:5', 'max:255'])]
     public string $name = '';
-    #[Rule(['required', 'string', 'min:5', 'max:255'])]
+    #[Rule(['required', 'string', 'min:5', 'max:255', 'unique:users'])]
     public string $username = '';
     #[Rule(['required', 'string', 'min:6', 'max:255'])]
     public string $password = '';

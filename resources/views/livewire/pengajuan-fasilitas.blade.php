@@ -86,10 +86,17 @@
                             @endif
                             @if (session('user_role') == 'kemahasiswaan')
                                 <td scope="col" class="px-3 py-2">
-                                    <a wire:click.prevent="ganti('{{ $value->id }}')"
-                                        class="mb-2 me-2 py-2 px-3 rounded-lg bg-yellow-300 text-white font-bold hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-yellow-200 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                                        href="#" data-modal-toggle="ganti-modal">
-                                        <i class="me-2 fa-solid fa-pencil"></i>Ubah Status</a>
+                                    @if ($value->status == 'belum')
+                                        <a wire:click.prevent="ganti('{{ $value->id }}')"
+                                            class="mb-2 me-2 py-2 px-3 rounded-lg bg-yellow-300 text-white font-bold hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-yellow-200 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                                            href="#" data-modal-toggle="ganti-modal">
+                                            <i class="me-2 fa-solid fa-pencil"></i>Ubah Status</a>
+                                    @else
+                                        <span
+                                            class="status-badge bg-green-500 text-white text-s font-medium me-2 px-2.5 py-0.5 rounded-md">
+                                            Verifikasi<i class="ms-2 fa-solid fa-check"></i>
+                                        </span>
+                                    @endif
                                 </td>
                             @endif
                         </tr>

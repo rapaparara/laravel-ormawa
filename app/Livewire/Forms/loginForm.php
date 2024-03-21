@@ -3,7 +3,9 @@
 namespace App\Livewire\Forms;
 
 use App\Models\User;
+use App\Models\users_kemahasiswaan as ModelsKemahasiswaan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
@@ -25,7 +27,13 @@ class loginForm extends Form
             if ($user->role == 'admin') {
                 return redirect()->route('admin.index')->with('role', $user->role);
             } elseif (($user->role == 'kemahasiswaan')) {
-                return redirect()->route('kemahasiswaan.index')->with('role', $user->role);
+                $cek_fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
+                if (!isset($cek_fakultas[0])) {
+                    Auth::logout();
+                    Session::flush();
+                    flash('Fakultas anda belum didaftarkan! Silakan hubungi admin.', 'bg-red-100 text-red-800');
+                    return redirect()->route('login');
+                } else return redirect()->route('kemahasiswaan.index')->with('role', $user->role);
             } elseif (($user->role == 'mahasiswa')) {
                 return redirect()->route('mahasiswa.index')->with('role', $user->role);
             }

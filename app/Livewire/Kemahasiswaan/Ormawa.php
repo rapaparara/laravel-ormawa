@@ -61,9 +61,9 @@ class Ormawa extends Component
             $data = $data_ormawa->where(function ($query) {
                 $query->where('name', 'like', '%' . $this->katakunci . '%')
                     ->orWhere('type', 'like', '%' . $this->katakunci . '%');
-            })
+            })->orderBy('updated_at', 'desc')
                 ->paginate(10);
-        } else $data = $data_ormawa->orderBy('id')->paginate(10);
+        } else $data = $data_ormawa->orderBy('updated_at', 'desc')->paginate(10);
         return view('livewire.kemahasiswaan.ormawa', [
             'dataOrmawa' => $data,
         ]);

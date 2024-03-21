@@ -152,23 +152,6 @@ class Kegiatan extends Component
         flash('Kegiatan berhasil dihapus.',  'bg-green-100 text-green-800');
         $this->reset();
     }
-    #[On('edit-task')]
-    public function ganti($id)
-    {
-        // $data = ModelsKepengurusan::findOrFail($id);
-        // $this->id = $data->id;
-        // $this->status = $data->status;
-    }
-
-    public function updateStatus()
-    {
-        // $data = ModelsKepengurusan::find($this->id);
-        // $data->update([
-        //     'status' => $this->status,
-        // ]);
-        // flash('Status berhasil diupdate.', 'bg-green-100 text-green-800');
-        // $this->reset();
-    }
     public function clear()
     {
         $this->kepengurusan_id = '';
@@ -186,14 +169,14 @@ class Kegiatan extends Component
         if (session('user_role') == 'mahasiswa') {
             $this->ormawa_id = (ModelsUsersOrmawa::where('user_id', session('user_id'))->get('ormawa_id'))[0]->ormawa_id;
             $data_kepengurusan = ModelsKepengurusan::orderBy('id')->where('ormawa_id', $this->ormawa_id)->paginate(10);
-            $data_kegiatan = ModelsKegiatan::orderBy('id')->where('ormawa_id', $this->ormawa_id)->paginate(10);
+            $data_kegiatan = ModelsKegiatan::orderBy('updated_at', 'desc')->where('ormawa_id', $this->ormawa_id)->paginate(10);
         } else {
             $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
             $fakultas_id = $fakultas[0]->fakultas_id;
             $data_kegiatan = ModelsKegiatan::whereHas('ormawa', function ($query) use ($fakultas_id) {
                 $query->where('fakultas_id', $fakultas_id);
             })
-                ->orderBy('id')
+                ->orderBy('updated_at', 'desc')
                 ->paginate(10);
             $data_kepengurusan = '';
         }

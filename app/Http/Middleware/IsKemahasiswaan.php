@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\users_kemahasiswaan;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
