@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('peminjaman_fasilitas', function (Blueprint $table) {
             $table->id();
-            $table->integer('fasilitas_id');
-            $table->integer('ormawa_id');
+            $table->unsignedBigInteger('fasilitas_id');
+            $table->unsignedBigInteger('ormawa_id');
+            $table->foreign('fasilitas_id')->references('id')->on('fasilitas');
+            $table->foreign('ormawa_id')->references('id')->on('ormawas');
+            $table->text('file_surat')->nullable();
             $table->date('waktu_mulai');
             $table->date('waktu_selesai');
+            $table->enum('status', ['belum', 'tolak', 'setujui']);
             $table->timestamps();
         });
     }

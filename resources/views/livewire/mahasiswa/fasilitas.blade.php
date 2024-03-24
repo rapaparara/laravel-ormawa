@@ -35,6 +35,9 @@
                                 Ormawa Peminjam
                             </th>
                             <th scope="col" class="px-3 py-2">
+                                Surat Peminjaman
+                            </th>
+                            <th scope="col" class="px-3 py-2">
                                 Tanggal Mulai
                             </th>
                             <th scope="col" class="px-3 py-2">
@@ -62,6 +65,14 @@
                                 </td>
                                 <td class="px-3 py-2">
                                     {{ $value->ormawa->name }}
+                                </td>
+                                <td class="px-3 py-2">
+                                    <button wire:click.prevent="lihat('{{ $value->file_surat }}')"
+                                        data-modal-target="lihat-modal" data-modal-toggle="lihat-modal"
+                                        class="mb-2 me-2 py-2 px-3 rounded-lg bg-green-500 text-white font-bold hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-400 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                                        type="button">
+                                        <i class="me-2 fa-solid fa-eye"></i>Lihat
+                                    </button>
                                 </td>
                                 <td class="px-3 py-2">
                                     {{ \Carbon\Carbon::parse($value->waktu_mulai)->isoFormat('D MMMM YYYY', 'Do MMMM YYYY') }}
@@ -114,7 +125,7 @@
         </div>
         @livewire('pengajuan-fasilitas');
 
-        <!-- Modal Pengguna -->
+        <!-- Modal Form -->
         <div wire:ignore.self id="tambah-modal" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-md max-h-full">
@@ -180,6 +191,38 @@
                                 <small class="text-red-600 font-medium">{{ $message }}</small>
                             @enderror
                         </div>
+                        <div>
+                            <label for="file_surat"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File
+                                Surat Peminjaman</label>
+                            @if ($editModal == true)
+                                <input type="file" wire:model="form.temp_file_surat" accept=".pdf"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                                <p class="mt-1
+                            text-sm text-gray-500 dark:text-gray-300"
+                                    id="file_input_help">File PDF (Maksimal
+                                    2MB).</p>
+                                @error('form.temp_file_surat')
+                                    <small class="text-red-600 font-medium">{{ $message }}</small>
+                                @enderror
+                            @else
+                                <input type="file" wire:model="form.file_surat" accept=".pdf"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                                <p class="mt-1
+                                text-sm text-gray-500 dark:text-gray-300"
+                                    id="file_input_help">File PDF (Maksimal
+                                    2MB).</p>
+                                @error('form.file_surat')
+                                    <small class="text-red-600 font-medium">{{ $message }}</small>
+                                @enderror
+                            @endif
+                            <div wire:loading wire:target="form.file_surat"
+                                class="px-3 py-1 text-sm font-medium leading-none text-center text-green-800 bg-green-200 rounded-lg animate-pulse">
+                                Sedang mengupload file...</div>
+                            <div wire:loading wire:target="form.temp_file_surat"
+                                class="px-3 py-1 text-sm font-medium leading-none text-center text-green-800 bg-green-200 rounded-lg animate-pulse">
+                                Sedang mengupload file...</div>
+                        </div>
                         <button type="submit"
                             class="mt-5 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform
                             hover:scale-105 hover:shadow-sm0 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
@@ -227,6 +270,36 @@
                             <button data-modal-hide="hapus-modal" type="button"
                                 class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Batal</button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main modal -->
+        <div wire:ignore.self id="lihat-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                            Surat Peminjaman
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="lihat-modal">
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                            <span class="sr-only">Close modal</span>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-4 md:p-5 space-y-4">
+                        <embed class="w-full h-screen" src="{{ asset('storage/' . $embed_file_surat) }}">
                     </div>
                 </div>
             </div>

@@ -13,16 +13,7 @@ use Livewire\WithPagination;
 
 class Kegiatan extends Component
 {
-    public string $kepengurusan_id = '';
-    public string $ormawa_id = '';
-    public $name = '';
-    public $deskripsi = '';
-    public $waktu_mulai = '';
-    public $waktu_selesai = '';
-    public $image;
-
-    public $temp_image;
-    public $id = '';
+    public $kepengurusan_id, $ormawa_id, $name, $deskripsi, $waktu_mulai, $waktu_selesai, $image, $temp_image, $id;
 
     public $showModal = false;
     public $editModal = false;
@@ -30,62 +21,77 @@ class Kegiatan extends Component
     use WithFileUploads;
     protected $paginationTheme = 'simple-tailwind';
 
-    public function validateSave()
-    {
-        if ($this->image !== '') {
-            $this->validate([
-                'kepengurusan_id' => ['required'],
-                'name' => ['required', 'string', 'min:5', 'max:255'],
-                'deskripsi' => ['required', 'string', 'min:20'],
-                'waktu_mulai' => ['required'],
-                'waktu_selesai' => ['required'],
-            ]);
-        } else {
-            $this->validate([
-                'kepengurusan_id' => ['required'],
-                'name' => ['required', 'string', 'min:5', 'max:255'],
-                'deskripsi' => ['required', 'string', 'min:20'],
-                'waktu_mulai' => ['required'],
-                'waktu_selesai' => ['required'],
-                'image' => ['image', 'max:1000'],
-            ]);
-        }
-    }
-    public function validateUpdate()
+    public function validatedData()
     {
         $this->validate([
             'kepengurusan_id' => ['required'],
             'name' => ['required', 'string', 'min:5', 'max:255'],
-            'deskripsi' => ['required', 'string', 'min:20'],
+            'deskripsi' => [
+                'required', 'string', 'min:20',
+                function ($attribute, $value, $fail) {
+                    if (preg_match('/^([\p{Z}\s])*$/', $value)) {
+                        $fail('Deskripsi hanya berisi spasi atau karakter yang sama.');
+                    }
+                    $words = str_word_count($value, 1);
+                    $meaningfulWords = array_filter($words, function ($word) {
+                        $allowedWords = [
+                            'mahasiswa', 'organisasi', 'universitas', 'gorontalo', 'ung', 'kampus', 'kegiatan', 'prestasi', 'pengurus', 'rektor',
+                            'dekade', 'eksklusif', 'magang', 'internasional', 'sertifikat', 'program', 'partisipasi', 'pelatih', 'olahraga', 'badminton',
+                            'akademi', 'seleksi', 'motivasi', 'adaptasi', 'bahasa', 'asing', 'penilaian', 'wawasan', 'pengalaman', 'kesejahteraan',
+                            'pembangunan', 'sosialisasi', 'pembinaan', 'kreatifitas', 'pengembangan', 'keterampilan', 'kemitraan', 'hubungan',
+                            'strategis', 'kolaborasi', 'kemajuan', 'perkuliahan', 'kebudayaan', 'pendidikan', 'budaya', 'sosial', 'event', 'pencapaian',
+                            'kompetisi', 'bimbingan', 'orientasi', 'rekognisi', 'pelatihan', 'workshop', 'seminar', 'saringan', 'aspirasi', 'kepedulian',
+                            'pemberdayaan', 'kebersamaan', 'solidaritas', 'partisipatif', 'komunitas', 'lembaga', 'pimpinan', 'kebijakan', 'penelitian',
+                            'struktur', 'komunikasi', 'dokumentasi', 'pelaporan', 'koordinasi', 'evaluasi', 'pemetaan', 'strategi', 'pengaruh', 'pemimpin',
+                            'kualitas', 'kinerja', 'pengelolaan', 'pelayanan', 'efisiensi', 'pendampingan', 'perencanaan', 'monitoring', 'implementasi',
+                            'manajemen', 'perubahan', 'perkembangan', 'peningkatan', 'kemampuan', 'wirausaha', 'inovasi', 'keberhasilan', 'kepuasan',
+                            'penerimaan', 'penghargaan', 'kesempatan', 'prestisius', 'internasionalisasi', 'kompetitif', 'berkualitas', 'teknologi',
+                            'informasi', 'seminar', 'pameran', 'pemrograman', 'pengembang', 'pengguna', 'perangkat', 'lunak', 'website', 'aplikasi',
+                            'belajar', 'berkarya', 'membaca', 'menulis', 'berhitung', 'berbicara', 'mendengarkan', 'kritis', 'analitis', 'inovatif',
+                            'komunikatif', 'adaptif', 'fleksibel', 'pemecahan', 'masalah', 'pengambilan', 'keputusan', 'pengaturan', 'koordinasi',
+                            'penyusunan', 'laporan', 'pemahaman', 'konsep', 'prinsip', 'teori', 'model', 'teknik', 'metode', 'standar', 'prosedur'
+                        ];
+
+                        return in_array($word, $allowedWords);
+                    });
+                    if (count($meaningfulWords) < 3) {
+                        $fail('Deskripsi terlalu pendek atau hanya berisi kata-kata yang tidak bermakna.');
+                    }
+                    if (mb_strlen($value) > 600) {
+                        $fail('Deskripsi terlalu panjang.');
+                    }
+                },
+            ],
             'waktu_mulai' => ['required'],
             'waktu_selesai' => ['required'],
-            'temp_image' => ['image', 'max:1000'],
+        ]);
+    }
+    public function validateSave()
+    {
+        $this->validate([
+            'image' => ['required', 'file', 'image', 'max:5120'],
+        ]);
+    }
+    public function validateUpdate()
+    {
+        $this->validate([
+            'temp_image' => ['required', 'file', 'image', 'max:5120'],
         ]);
     }
     public function save(): void
     {
+        $this->validateData();
         $this->validateSave();
-        if ($this->image !== '') {
-            $path = $this->image->store('gambar-kegiatan', 'public');
-            $kegiatan = ModelsKegiatan::create([
-                'kepengurusan_id' => $this->kepengurusan_id,
-                'ormawa_id' => $this->ormawa_id,
-                'name' => $this->name,
-                'deskripsi' => $this->deskripsi,
-                'waktu_mulai' => $this->waktu_mulai,
-                'waktu_selesai' => $this->waktu_selesai,
-                'image' => $path,
-            ]);
-        } else {
-            $kegiatan = ModelsKegiatan::create([
-                'kepengurusan_id' => $this->kepengurusan_id,
-                'ormawa_id' => $this->ormawa_id,
-                'name' => $this->name,
-                'deskripsi' => $this->deskripsi,
-                'waktu_mulai' => $this->waktu_mulai,
-                'waktu_selesai' => $this->waktu_selesai,
-            ]);
-        }
+        $path = $this->image->store('gambar-kegiatan', 'public');
+        $kegiatan = ModelsKegiatan::create([
+            'kepengurusan_id' => $this->kepengurusan_id,
+            'ormawa_id' => $this->ormawa_id,
+            'name' => $this->name,
+            'deskripsi' => $this->deskripsi,
+            'waktu_mulai' => $this->waktu_mulai,
+            'waktu_selesai' => $this->waktu_selesai,
+            'image' => $path,
+        ]);
         flash('Kegiatan berhasil dibuat.', 'bg-green-100 text-green-800');
         $this->reset();
     }
@@ -105,7 +111,8 @@ class Kegiatan extends Component
     public function update()
     {
         $data_kegiatan = ModelsKegiatan::find($this->id);
-        if ($this->temp_image == '') {
+        if (empty($this->temp_image)) {
+            $this->validatedData();
             $data_kegiatan->update([
                 'kepengurusan_id' => $this->kepengurusan_id,
                 'name' => $this->name,
@@ -114,6 +121,7 @@ class Kegiatan extends Component
                 'waktu_selesai' => $this->waktu_selesai,
             ]);
         } else {
+            $this->validatedData();
             $this->validateUpdate();
             unlink('storage/' . $data_kegiatan->image);
             $path = $this->temp_image->store('gambar-kegiatan', 'public');

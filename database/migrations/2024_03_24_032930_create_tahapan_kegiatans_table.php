@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
+        Schema::create('tahapan_kegiatans', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable');
+            $table->unsignedBigInteger('kegiatan_id');
+            $table->foreign('kegiatan_id')->references('id')->on('kegiatans');
             $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
+            $table->text('deskripsi');
+            $table->date('waktu_mulai');
+            $table->date('waktu_selesai');
+            $table->enum('status', ['belum', 'sementara', 'selesai']);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('tahapan_kegiatans');
     }
 };

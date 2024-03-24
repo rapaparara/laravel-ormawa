@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('users_ormawas', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('ormawa_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('ormawa_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('ormawa_id')->references('id')->on('ormawas');
             $table->timestamps();
         });
     }

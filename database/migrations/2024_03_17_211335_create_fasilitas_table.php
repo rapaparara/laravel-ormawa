@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('fasilitas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('fakultas_id');
+            $table->unsignedBigInteger('fakultas_id');
+            $table->foreign('fakultas_id')->references('id')->on('fakultas');
             $table->timestamps();
         });
     }

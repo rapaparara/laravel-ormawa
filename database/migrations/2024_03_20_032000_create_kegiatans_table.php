@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->id();
-            $table->integer('ormawa_id');
-            $table->integer('kepengurusan_id');
+            $table->unsignedBigInteger('ormawa_id');
+            $table->unsignedBigInteger('kepengurusan_id');
+            $table->foreign('ormawa_id')->references('id')->on('ormawas');
+            $table->foreign('kepengurusan_id')->references('id')->on('periode_kepengurusans');
             $table->string('name');
             $table->longText('deskripsi');
             $table->date('waktu_mulai');
             $table->date('waktu_selesai');
-            $table->string('image')->nullable();
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }
