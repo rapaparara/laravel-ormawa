@@ -21,7 +21,7 @@ class Kegiatan extends Component
     use WithFileUploads;
     protected $paginationTheme = 'simple-tailwind';
 
-    public function validatedData()
+    public function validateData()
     {
         $this->validate([
             'kepengurusan_id' => ['required'],
@@ -57,7 +57,7 @@ class Kegiatan extends Component
                     if (count($meaningfulWords) < 3) {
                         $fail('Deskripsi terlalu pendek atau hanya berisi kata-kata yang tidak bermakna.');
                     }
-                    if (mb_strlen($value) > 600) {
+                    if (mb_strlen($value) > 10000) {
                         $fail('Deskripsi terlalu panjang.');
                     }
                 },
@@ -112,7 +112,7 @@ class Kegiatan extends Component
     {
         $data_kegiatan = ModelsKegiatan::find($this->id);
         if (empty($this->temp_image)) {
-            $this->validatedData();
+            $this->validateData();
             $data_kegiatan->update([
                 'kepengurusan_id' => $this->kepengurusan_id,
                 'name' => $this->name,
@@ -121,7 +121,7 @@ class Kegiatan extends Component
                 'waktu_selesai' => $this->waktu_selesai,
             ]);
         } else {
-            $this->validatedData();
+            $this->validateData();
             $this->validateUpdate();
             unlink('storage/' . $data_kegiatan->image);
             $path = $this->temp_image->store('gambar-kegiatan', 'public');
@@ -154,10 +154,15 @@ class Kegiatan extends Component
     }
     public function deleteConfirm()
     {
-        $kegiatan = ModelsKegiatan::find($this->id);
-        unlink('storage/' . $kegiatan->image);
-        $kegiatan->delete();
-        flash('Kegiatan berhasil dihapus.',  'bg-green-100 text-green-800');
+        try {
+            $kegiatan = ModelsKegiatan::find($this->id);
+            $path = $kegiatan->image;
+            $kegiatan->delete();
+            unlink('storage/' . $path);
+            flash('Kegiatan berhasil dihapus.',  'bg-green-100 text-green-800');
+        } catch (\Throwable $th) {
+            flash('Gagal menghapus kegiatan.',  'bg-red-100 text-red-800');
+        }
         $this->reset();
     }
     public function clear()
@@ -176,7 +181,7 @@ class Kegiatan extends Component
     {
         if (session('user_role') == 'mahasiswa') {
             $this->ormawa_id = (ModelsUsersOrmawa::where('user_id', session('user_id'))->get('ormawa_id'))[0]->ormawa_id;
-            $data_kepengurusan = ModelsKepengurusan::orderBy('id')->where('ormawa_id', $this->ormawa_id)->paginate(10);
+            $data_kepengurusan = ModelsKepengurusan::orderBy('id')->where('status', 'setujui')->where('ormawa_id', $this->ormawa_id)->paginate(10);
             $data_kegiatan = ModelsKegiatan::orderBy('updated_at', 'desc')->where('ormawa_id', $this->ormawa_id)->paginate(10);
         } else {
             $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
