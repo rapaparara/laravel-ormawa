@@ -14,8 +14,7 @@ use Livewire\WithPagination;
 
 class TahapanKegiatan extends Component
 {
-    public $kegiatan_id, $name, $deskripsi, $katakunci, $byKegiatan,
-        $waktu_mulai, $waktu_selesai, $status, $id;
+    public $kegiatan_id, $name, $deskripsi, $katakunci, $byKegiatan, $waktu_mulai, $waktu_selesai, $status, $id;
     public $showModal = false;
     public $editModal = false;
 
@@ -108,9 +107,9 @@ class TahapanKegiatan extends Component
     {
         try {
             ModelsTahapan::find($this->id)->delete();
-            flash('Tahapan kegiatan berhasil dihapus.',  'bg-green-100 text-green-800');
+            flash('Tahapan kegiatan berhasil dihapus.', 'bg-green-100 text-green-800');
         } catch (\Throwable $th) {
-            flash('Gagal menghapus tahapan kegiatan.',  'bg-red-100 text-red-800');
+            flash('Gagal menghapus tahapan kegiatan.', 'bg-red-100 text-red-800');
         }
         $this->reset();
     }
@@ -149,7 +148,6 @@ class TahapanKegiatan extends Component
         $this->clear();
         $this->reset();
     }
-
     public function deleteDokumentasi($id)
     {
         try {
@@ -157,10 +155,10 @@ class TahapanKegiatan extends Component
             $path = $dokumentasi->file_dokumentasi;
             $dokumentasi->delete();
             unlink('storage/' . $path);
-            flash('Dokumentasi berhasil dihapus.',  'bg-green-100 text-green-800');
+            flash('Dokumentasi berhasil dihapus.', 'bg-green-100 text-green-800');
             $this->reset();
         } catch (\Throwable $th) {
-            flash('Gagal menghapus dokumentasi.',  'bg-red-100 text-red-800');
+            flash('Gagal menghapus dokumentasi.', 'bg-red-100 text-red-800');
         }
         $this->clear();
     }
@@ -175,21 +173,16 @@ class TahapanKegiatan extends Component
             })->orderBy('tahapan_kegiatans.updated_at', 'desc');
         } else {
             $fakultas_id = ModelsKemahasiswaan::where('user_id', session('user_id'))->value('fakultas_id');
-            $data_tahapan_query = ModelsTahapan::join('kegiatans', 'tahapan_kegiatans.kegiatan_id', '=', 'kegiatans.id')
-                ->join('ormawas', 'kegiatans.ormawa_id', '=', 'ormawas.id')
-                ->join('fakultas', 'ormawas.fakultas_id', '=', 'fakultas.id')
-                ->where('fakultas_id', $fakultas_id)
-                ->orderBy('tahapan_kegiatans.updated_at', 'desc');
-
+            $data_tahapan_query = ModelsTahapan::join('kegiatans', 'tahapan_kegiatans.kegiatan_id', '=', 'kegiatans.id')->join('ormawas', 'kegiatans.ormawa_id', '=', 'ormawas.id')->join('fakultas', 'ormawas.fakultas_id', '=', 'fakultas.id')->select('tahapan_kegiatans.id as tahapan_id', 'tahapan_kegiatans.*')->where('fakultas_id', $fakultas_id)->orderBy('tahapan_kegiatans.updated_at', 'desc');
             $data['dataKegiatan'] = ModelsKegiatan::whereHas('ormawa', function ($query) use ($fakultas_id) {
                 $query->where('fakultas_id', $fakultas_id);
             })
-                ->orderBy('updated_at', 'desc')->get();
+                ->orderBy('updated_at', 'desc')
+                ->get();
         }
         if ($this->katakunci != null) {
             $data_tahapan_query->where(function ($query) {
-                $query->where('name', 'like', '%' . $this->katakunci . '%')
-                    ->orWhere('deskripsi', 'like', '%' . $this->katakunci . '%');
+                $query->where('name', 'like', '%' . $this->katakunci . '%')->orWhere('deskripsi', 'like', '%' . $this->katakunci . '%');
             });
         }
         if ($this->byKegiatan != null) {

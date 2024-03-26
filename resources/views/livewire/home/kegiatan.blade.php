@@ -93,8 +93,10 @@
                     <p class="mb-3 max-w-screen-xl text-lg text-gray-500">{{ $deskripsi }}</p>
                     @if (!empty($dataTahapan))
                         @foreach ($dataTahapan as $tahapan)
-                            <h5 class="mb-2 text-xl font-bold tracking-tight text-indigo-800 dark:text-white">
-                                {{ $tahapan->name }}
+                            <div class="">
+                                <h5 class="text-xl font-bold tracking-tight text-indigo-800 dark:text-white">
+                                    {{ $tahapan->name }}
+                                </h5>
                                 @if ($tahapan->status === 'belum')
                                     <span
                                         class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Belum
@@ -108,27 +110,25 @@
                                     <span
                                         class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">Selesai</span>
                                 @endif
-                            </h5>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                                <div class="relative">
-                                    @foreach ($dataDokumentasi as $dokumentasi)
-                                        @if ($dokumentasi['tahapan_kegiatan_id'] == $tahapan->id)
-                                            <a href="{{ asset('storage/' . $dokumentasi['file_dokumentasi']) }}"
-                                                target="_blank" class="block relative">
-                                                <img class="h-96 w-full object-cover rounded-lg transition duration-300 ease-in-out transform hover:scale-90"
-                                                    src="{{ asset('storage/' . $dokumentasi['file_dokumentasi']) }}"
-                                                    alt="dokumentasi">
-                                            </a>
-                                        @endif
-                                </div>
+                            </div>
+                            <div class="grid lg:grid-cols-2 gap-3">
+                                @foreach ($dataDokumentasi as $dokumentasi)
+                                    @if ($dokumentasi['tahapan_kegiatan_id'] == $tahapan->id)
+                                        <a href="{{ asset('storage/' . $dokumentasi['file_dokumentasi']) }}"
+                                            target="_blank">
+                                            <img class="h-96 w-full lg:w-1/2 object-cover rounded-lg transition duration-300 ease-in-out transform hover:scale-90"
+                                                src="{{ asset('storage/' . $dokumentasi['file_dokumentasi']) }}"
+                                                alt="dokumentasi">
+                                        </a>
+                                    @endif
+                                @endforeach
+                            </div>
                         @endforeach
-                    @endforeach
+                    @endif
                 </div>
-                @endif
             </div>
         </div>
     </div>
-</div>
 
 
 </div>

@@ -321,45 +321,49 @@
                                     <img class="h-96 w-full object-cover rounded-lg transition duration-300 ease-in-out transform hover:scale-90"
                                         src="{{ asset('storage/' . $value->file_dokumentasi) }}" alt="dokumentasi">
                                 </a>
-                                <a href="#" wire:click="deleteDokumentasi('{{ $value->id }}')"
-                                    class="absolute top-0 left-0" data-modal-hide="lihat-modal">
-                                    <button type="button"
-                                        class="py-2 px-3 rounded-lg
+                                @if (session('user_role') == 'mahasiswa')
+                                    <a href="#" wire:click="deleteDokumentasi('{{ $value->id }}')"
+                                        class="absolute top-0 left-0" data-modal-hide="lihat-modal">
+                                        <button type="button"
+                                            class="py-2 px-3 rounded-lg
                                             bg-red-600 text-white font-bold hover:bg-red-700 focus:ring-4
                                             focus:outline-none focus:ring-red-300 transition duration-300
                                             ease-in-out transform hover:scale-105 hover:shadow-sm"
-                                        data-modal-toggle="tambah-tahapan-modal">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </a>
+                                            data-modal-toggle="tambah-tahapan-modal">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </a>
+                                @endif
                             </div>
                         @endforeach
                     </div>
-                    <form wire:submit="uploadFile" class="space-y-4">
-                        <div>
-                            <label for="dokumentasi"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload
-                                Dokumentasi</label>
-                            <input type="file" wire:model="dokumentasi"
-                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
-                            <p class="mt-1
+                    @if (session('user_role') == 'mahasiswa')
+                        <form wire:submit="uploadFile" class="space-y-4">
+                            <div>
+                                <label for="dokumentasi"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload
+                                    Dokumentasi</label>
+                                <input type="file" wire:model="dokumentasi"
+                                    class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                                <p class="mt-1
                         text-sm text-gray-500 dark:text-gray-300"
-                                id="file_input_help">
-                                File Gambar (Maksimal 500KB). Disarankan dokumentasi berorientasi landscape.</p>
-                            @error('dokumentasi')
-                                <small class="text-red-600 font-medium">{{ $message }}</small>
-                            @enderror
-                            <div wire:loading wire:target="dokumentasi"
-                                class="px-3 py-1 text-sm font-medium leading-none text-center text-green-800 bg-green-200 rounded-lg animate-pulse">
-                                Sedang mengupload file...</div>
-                        </div>
-                        <button type="submit"
-                            class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform
+                                    id="file_input_help">
+                                    File Gambar (Maksimal 500KB). Disarankan dokumentasi berorientasi landscape.</p>
+                                @error('dokumentasi')
+                                    <small class="text-red-600 font-medium">{{ $message }}</small>
+                                @enderror
+                                <div wire:loading wire:target="dokumentasi"
+                                    class="px-3 py-1 text-sm font-medium leading-none text-center text-green-800 bg-green-200 rounded-lg animate-pulse">
+                                    Sedang mengupload file...</div>
+                            </div>
+                            <button type="submit"
+                                class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform
                         hover:scale-105 hover:shadow-sm0 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                            data-modal-hide="lihat-modal">
-                            Upload
-                        </button>
-                    </form>
+                                data-modal-hide="lihat-modal">
+                                Upload
+                            </button>
+                        </form>
+                    @endif
                 </div>
             </div>
         </div>
