@@ -72,10 +72,10 @@
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Peminjaman
                 Fasilitas</a>
         </li>
-        <li>
+        {{-- <li>
             <a href="{{ route('mahasiswa.laporan') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Laporan</a>
-        </li>
+        </li> --}}
     @endif
 @else
     <li>

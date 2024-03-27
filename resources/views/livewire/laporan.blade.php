@@ -218,17 +218,101 @@
                 </ul>
             </div>
         </div>
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Download Laporan
-        </h5>
-        <div class="mb-4 grid md:grid-cols-3 gap-3">
-            <div class="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
-                <canvas id="barChart"></canvas>
+        <div class="mb-3 flex flex-nowrap">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-indigo-800 dark:text-white">Download Laporan
+            </h5>
+            <select wire:model.live="byKegiatan" name="byKegiatan"
+                class="ms-auto bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-48 md:w-64  p-2.5">
+                <option value="">Semua Ormawa</option>
+                @foreach ($dataOrmawa as $key => $value)
+                    <option value="{{ $value->id }}">{{ $value->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-4 grid md:grid-cols-2 gap-3">
+            <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
+                <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan Kegiatan
+                </h5>
+                <canvas id="chartKegiatan"></canvas>
+                <button
+                    class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                    type="button">
+                    <i class="me-2 fa-solid fa-download"></i>Download
+                </button>
+            </div>
+            <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
+                <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
+                    Peminjaman Fasilitas
+                </h5>
+                <canvas id="lineChart"></canvas>
+                <button
+                    class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                    type="button">
+                    <i class="me-2 fa-solid fa-download"></i>Download
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-4 grid">
+            <div class="w-full md:max-w-full-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
+                <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
+                    Kepengurusan
+                </h5>
+                <canvas id="KepengurusanChart"></canvas>
+                <button
+                    class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                    type="button">
+                    <i class="me-2 fa-solid fa-download"></i>Download
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        var ctx = document.getElementById('barChart').getContext('2d');
+        var ctx = document.getElementById('chartKegiatan').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @json($chartKegiatan['labels']),
+                datasets: [{
+                    label: 'Jumlah Kegiatan',
+                    data: @json($chartKegiatan['data']),
+                    backgroundColor: ['#EADFB4', '#9BB0C1', '#51829B', '#F6995C'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        var line = document.getElementById('lineChart').getContext('2d');
+        var lineChart = new Chart(line, {
+            type: 'line',
+            data: {
+                labels: @json($dataCharts['labels']),
+                datasets: [{
+                    label: 'Jumlah Peminjaman Bulanan',
+                    data: @json($dataCharts['data']),
+                    borderColor: '#51829B',
+                    // backgroundColor: ['#EADFB4', '#9BB0C1', '#51829B', '#F6995C'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    },
+                }
+            }
+        });
+
+        var ctx = document.getElementById('KepengurusanChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -236,8 +320,7 @@
                 datasets: [{
                     label: 'Data',
                     data: @json($dataCharts['data']),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: ['#EADFB4', '#9BB0C1', '#51829B', '#F6995C'],
                     borderWidth: 1
                 }]
             },
