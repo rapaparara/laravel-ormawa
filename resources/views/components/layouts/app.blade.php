@@ -33,11 +33,11 @@
                 <ul
                     class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                     <li>
-                        <a wire:navigate href="{{ route('home.fasilitas') }}"
+                        <a href="{{ route('home.fasilitas') }}"
                             class="hover:underline me-4 md:me-6">Fasilitas</a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('home.kegiatan') }}" class="hover:underline">Kegiatan Ormawa</a>
+                        <a href="{{ route('home.kegiatan') }}" class="hover:underline">Kegiatan Ormawa</a>
                     </li>
                 </ul>
             </div>

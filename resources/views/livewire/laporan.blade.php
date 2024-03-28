@@ -229,47 +229,56 @@
                 @endforeach
             </select>
         </div>
-        <div class="mb-4 grid md:grid-cols-2 gap-3">
+
+        <div class="mb-4 grid">
+        </div>
+        <div class="mb-4 grid md:grid-cols-3 gap-4">
             <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
-                <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan Kegiatan
-                </h5>
-                <canvas id="chartKegiatan"></canvas>
-                <button
-                    class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                    type="button">
-                    <i class="me-2 fa-solid fa-download"></i>Download
+                <div class="mb-3 flex flex-wrap">
+                    <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
+                        Kegiatan
+                    </h5>
+                    <button
+                        class="ms-auto py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                        type="button">
+                        <i class="me-2 fa-solid fa-download"></i>Download
+                </div>
                 </button>
+                <canvas id="chartKegiatan"></canvas>
             </div>
             <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
-                <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
-                    Peminjaman Fasilitas
-                </h5>
-                <canvas id="chartPeminjaman" class=""></canvas>
-                <button
-                    class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                    type="button">
-                    <i class="me-2 fa-solid fa-download"></i>Download
-                </button>
+                <div class="mb-3 flex flex-wrap">
+                    <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
+                        Kepengurusan
+                    </h5>
+                    <button
+                        class="ms-auto py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                        type="button">
+                        <i class="me-2 fa-solid fa-download"></i>Download
+                </div>
+                <canvas id="chartKepengurusan" class=""></canvas>
+            </div>
+            <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
+                <div class="mb-3 flex flex-wrap">
+                    <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
+                        Peminjamaan Fasilitas
+                    </h5>
+                    <button
+                        class="ms-auto py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
+                        type="button">
+                        <i class="me-2 fa-solid fa-download"></i>Download
+                </div>
+                <div class="h-80">
+                    <canvas id="chartPeminjaman" ></canvas>
+                </div>
             </div>
         </div>
 
-        <div class="mb-4 grid">
-            <div class="w-full md:max-w-full-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
-                <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
-                    Kepengurusan
-                </h5>
-                <canvas id="KepengurusanChart"></canvas>
-                <button
-                    class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                    type="button">
-                    <i class="me-2 fa-solid fa-download"></i>Download
-                </button>
-            </div>
-        </div>
     </div>
     <script>
         var chartKegiatan = @json($chartKegiatan);
         var chartPeminjaman = @json($chartPeminjaman);
+        var chartKepengurusan = @json($chartKepengurusan);
         new Chart(document.getElementById('chartKegiatan'), {
             type: 'pie',
             data: {
@@ -311,6 +320,8 @@
                         forceOverride: true
                     }
                 },
+                responsive: true,
+                maintainAspectRatio: false,
                 spanGaps: true, // enable for all datasets
                 datasets: {
                     line: {
@@ -321,22 +332,20 @@
             }
         });
 
-        var ctx = document.getElementById('KepengurusanChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
+        new Chart(document.getElementById('chartKepengurusan'), {
+            type: 'pie',
             data: {
-                labels: @json($dataCharts['labels']),
                 datasets: [{
-                    label: 'Data',
-                    data: @json($dataCharts['data']),
-                    backgroundColor: ['#EADFB4', '#9BB0C1', '#51829B', '#F6995C'],
-                    borderWidth: 1
-                }]
+                    data: chartKepengurusan.data,
+                    label: 'Jumlah Pengurus'
+                }],
+                labels: chartKepengurusan.labels
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                scales: {},
+                elements: {
+                    arc: {
+                        borderWidth: 4
                     }
                 }
             }

@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\kegiatan as ModelsKegiatan;
 use App\Models\ormawa as ModelsOrmawa;
 use App\Models\peminjaman_fasilitas as ModelsPeminjaman;
+use App\Models\pengurus as ModelsPengurus;
 use App\Models\users_kemahasiswaan as ModelsKemahasiswaan;
 use Livewire\Component;
 
@@ -21,14 +22,14 @@ class Laporan extends Component
         $data_kegiatan = ModelsKegiatan::whereHas('ormawa', function ($query) use ($fakultas_id) {
             $query->where('fakultas_id', $fakultas_id);
         })->get();
-        $a = [];
+        $i = [];
         foreach ($data_kegiatan as $kegiatan) {
             $ormawa_id = $kegiatan->ormawa_id;
             $label = $kegiatan->ormawa->name;
-            if (isset($a[$ormawa_id])) {
-                $a[$ormawa_id]['data']++;
+            if (array_key_exists($ormawa_id, $i)) {
+                $i[$ormawa_id]['data']++;
             } else {
-                $a[$ormawa_id] = [
+                $i[$ormawa_id] = [
                     'labels' => $label,
                     'data' => 1,
                 ];
@@ -38,7 +39,7 @@ class Laporan extends Component
             'labels' => [],
             'data' => [],
         ];
-        foreach ($a as $ormawa) {
+        foreach ($i as $ormawa) {
             $chartKegiatan['labels'][] = $ormawa['labels'];
             $chartKegiatan['data'][] = $ormawa['data'];
         }
@@ -50,7 +51,6 @@ class Laporan extends Component
             ->selectRaw('MONTH(waktu_mulai) AS bulan, COUNT(*) AS jumlah, ormawa_id')
             ->groupBy('bulan', 'ormawa_id')
             ->get();
-        // Inisialisasi array untuk setiap ORMawa
         $ormawa_data = [];
         foreach ($data['dataOrmawa'] as $key => $value) {
             if ($value->fakultas_id == $fakultas_id) {
@@ -60,19 +60,40 @@ class Laporan extends Component
                 ];
             }
         }
-
-        // Mengisi data peminjaman per bulan sesuai dengan hasil query
         foreach ($data_peminjaman as $peminjaman) {
             if (array_key_exists($peminjaman->ormawa_id, $ormawa_data)) {
                 $ormawa_data[$peminjaman->ormawa_id]['data'][$peminjaman->bulan - 1] += $peminjaman->jumlah;
             }
         }
+        // Data Pengurus
+        // $data_pengurus = ModelsPengurus::query()->get();
+        $data_pengurus = ModelsPengurus::join('periode_kepengurusans', 'penguruses.kepengurusan_id', '=', 'periode_kepengurusans.id')
+        ->join('ormawas', 'periode_kepengurusans.ormawa_id', '=', 'ormawas.id')
+        ->join('fakultas', 'ormawas.fakultas_id', '=', 'fakultas.id')
+        ->where('fakultas_id', $fakultas_id)->orderBy('penguruses.id', 'desc')->get();
 
-        $data_charts = [
-            'labels' => ['January', 'February', 'March', 'April', 'May'],
-            'data' => [35, 29, 60, 31, 53],
+        $i = [];
+        foreach ($data_pengurus as $pengurus) {
+            $kepengurusan_id = $pengurus->kepengurusan_id;
+            $label = $pengurus->kepengurusan->fakultas->name;
+            if (array_key_exists($kepengurusan_id, $i)) {
+                $i[$kepengurusan_id]['data']++;
+            } else {
+                $i[$kepengurusan_id] = [
+                    'labels' => $label,
+                    'data' => 1,
+                ];
+            }
+        }
+        $chartKepengurusan = [
+            'labels' => [],
+            'data' => [],
         ];
-        $data['dataCharts'] = $data_charts;
+        foreach ($i as $pengurus) {
+            $chartKepengurusan['labels'][] = $pengurus['labels'];
+            $chartKepengurusan['data'][] = $pengurus['data'];
+        }
+        $data['chartKepengurusan'] = $chartKepengurusan;
         $data['chartPeminjaman'] = array_values($ormawa_data);
         $data['chartKegiatan'] = $chartKegiatan;
         return view('livewire.laporan', $data);
