@@ -37,7 +37,6 @@ class formPengguna extends Form
     }
     public function update()
     {
-        dd($this->id);
         if ($this->validate()) {
             $data = User::find($this->id);
             if ($this->password_temp == '') {

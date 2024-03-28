@@ -47,24 +47,33 @@ class Laporan extends Component
             $query->where('fakultas_id', $fakultas_id);
         })
             ->where('status', 'setujui')
-            ->orderBy('waktu_mulai', 'desc')
+            ->selectRaw('MONTH(waktu_mulai) AS bulan, COUNT(*) AS jumlah, ormawa_id')
+            ->groupBy('bulan', 'ormawa_id')
             ->get();
-        $data_fasilitas = [
-            'labels' => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-            'data' => [],
-        ];
-        $peminjaman_per_bulan = array_fill(0, 12, 0);
-        foreach ($data_peminjaman as $peminjaman) {
-            $bulan_peminjaman = date('n', strtotime($peminjaman->waktu_mulai));
-            $peminjaman_per_bulan[$bulan_peminjaman - 1]++;
+        // Inisialisasi array untuk setiap ORMawa
+        $ormawa_data = [];
+        foreach ($data['dataOrmawa'] as $key => $value) {
+            if ($value->fakultas_id == $fakultas_id) {
+                $ormawa_data[$value->id] = [
+                    'name' => $value->name,
+                    'data' => array_fill(0, 12, 0), // Inisialisasi dengan 0 untuk setiap bulan
+                ];
+            }
         }
-        $data_fasilitas['data'] = $peminjaman_per_bulan;
+
+        // Mengisi data peminjaman per bulan sesuai dengan hasil query
+        foreach ($data_peminjaman as $peminjaman) {
+            if (array_key_exists($peminjaman->ormawa_id, $ormawa_data)) {
+                $ormawa_data[$peminjaman->ormawa_id]['data'][$peminjaman->bulan - 1] += $peminjaman->jumlah;
+            }
+        }
 
         $data_charts = [
             'labels' => ['January', 'February', 'March', 'April', 'May'],
             'data' => [35, 29, 60, 31, 53],
         ];
-        $data['dataCharts'] = $data_fasilitas;
+        $data['dataCharts'] = $data_charts;
+        $data['chartPeminjaman'] = array_values($ormawa_data);
         $data['chartKegiatan'] = $chartKegiatan;
         return view('livewire.laporan', $data);
     }

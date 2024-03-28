@@ -244,7 +244,7 @@
                 <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
                     Peminjaman Fasilitas
                 </h5>
-                <canvas id="lineChart"></canvas>
+                <canvas id="chartPeminjaman" class=""></canvas>
                 <button
                     class="my-2 ms-3 py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
                     type="button">
@@ -267,48 +267,57 @@
             </div>
         </div>
     </div>
-
     <script>
-        var ctx = document.getElementById('chartKegiatan').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
+        var chartKegiatan = @json($chartKegiatan);
+        var chartPeminjaman = @json($chartPeminjaman);
+        new Chart(document.getElementById('chartKegiatan'), {
+            type: 'pie',
             data: {
-                labels: @json($chartKegiatan['labels']),
                 datasets: [{
-                    label: 'Jumlah Kegiatan',
-                    data: @json($chartKegiatan['data']),
-                    backgroundColor: ['#EADFB4', '#9BB0C1', '#51829B', '#F6995C'],
-                    borderWidth: 1
-                }]
+                    data: chartKegiatan.data,
+                    label: 'Jumlah Kegiatan'
+                }],
+                labels: chartKegiatan.labels
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                scales: {},
+                elements: {
+                    arc: {
+                        borderWidth: 4
                     }
                 }
             }
         });
-
-        var line = document.getElementById('lineChart').getContext('2d');
-        var lineChart = new Chart(line, {
+        new Chart(document.getElementById('chartPeminjaman'), {
             type: 'line',
             data: {
-                labels: @json($dataCharts['labels']),
-                datasets: [{
-                    label: 'Jumlah Peminjaman Bulanan',
-                    data: @json($dataCharts['data']),
-                    borderColor: '#51829B',
-                    // backgroundColor: ['#EADFB4', '#9BB0C1', '#51829B', '#F6995C'],
-                    borderWidth: 2
-                }]
+                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
+                    'Oktober', 'November', 'Desember'
+                ],
+                datasets: chartPeminjaman.map(data => ({
+                    label: data.name,
+                    data: data.data,
+                    borderWidth: 3
+                }))
             },
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
-                    },
-                }
+                        // beginAtZero: true,
+                    }
+                },
+                plugins: {
+                    colors: {
+                        forceOverride: true
+                    }
+                },
+                spanGaps: true, // enable for all datasets
+                datasets: {
+                    line: {
+                        pointRadius: 4 // disable for all `'line'` datasets
+                    }
+                },
+                tension: 0.18,
             }
         });
 
