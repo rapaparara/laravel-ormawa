@@ -14,10 +14,10 @@
             @if (session('user_id'))
                 <span class="my-auto me-3 font-semibold text-sm hidden lg:block">{{ session('name') }}</span>
                 <!-- Dropdown menu -->
-                <div class="relative" x-data="{ open: false }">
+                <div class="relative ps-2" x-data="{ open: false }">
                     <button @click="open = !open" type="button" class="flex text-md rounded-full md:me-2 my-auto focus:outline-none" id="user-menu-button" aria-expanded="false">
                         <span class="sr-only">Open user menu</span>
-                        <img class="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" alt="{{ session('username') }}">
+                        <img class="w-10 h-10 rounded-full" src="{{ asset('avatar.png') }}" alt="{{ session('username') }}">
                     </button>
                     <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
                         <div class="px-4 py-3">
