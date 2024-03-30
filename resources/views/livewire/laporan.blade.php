@@ -135,79 +135,110 @@
 
     </div>
     <script>
-        var chartKegiatan = @json($chartKegiatan);
-        var chartPeminjaman = @json($chartPeminjaman);
-        var chartKepengurusan = @json($chartKepengurusan);
-        new Chart(document.getElementById('chartKegiatan'), {
-            type: 'pie',
-            data: {
-                datasets: [{
-                    data: chartKegiatan.data,
-                    label: 'Jumlah Kegiatan'
-                }],
-                labels: chartKegiatan.labels
-            },
-            options: {
-                scales: {},
-                elements: {
-                    arc: {
-                        borderWidth: 4
+        document.addEventListener('DOMContentLoaded', function() {
+            var chartKegiatan = @json($chartKegiatan);
+            var chartPeminjaman = @json($chartPeminjaman);
+            var chartKepengurusan = @json($chartKepengurusan);
+            setInterval(() => {
+                @this.dispatch('ubahData');
+            }, 3000);
+            const vchartKegiatan = new Chart(document.getElementById('chartKegiatan'), {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: chartKegiatan.data,
+                        label: 'Jumlah Kegiatan'
+                    }],
+                    labels: chartKegiatan.labels
+                },
+                options: {
+                    scales: {},
+                    elements: {
+                        arc: {
+                            borderWidth: 4
+                        }
                     }
                 }
-            }
-        });
-        new Chart(document.getElementById('chartPeminjaman'), {
-            type: 'line',
-            data: {
-                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September',
-                    'Oktober', 'November', 'Desember'
-                ],
-                datasets: chartPeminjaman.map(data => ({
-                    label: data.name,
-                    data: data.data,
-                    borderWidth: 3
-                }))
-            },
-            options: {
-                scales: {
-                    y: {
-                        // beginAtZero: true,
-                    }
+            });
+            const vchartPeminjaman = new Chart(document.getElementById('chartPeminjaman'), {
+                type: 'line',
+                data: {
+                    labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus',
+                        'September',
+                        'Oktober', 'November', 'Desember'
+                    ],
+                    datasets: chartPeminjaman.map(data => ({
+                        label: data.name,
+                        data: data.data,
+                        borderWidth: 3
+                    }))
                 },
-                plugins: {
-                    colors: {
-                        forceOverride: true
-                    }
+                options: {
+                    scales: {
+                        y: {
+                            // beginAtZero: true,
+                        }
+                    },
+                    plugins: {
+                        colors: {
+                            forceOverride: true
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    spanGaps: true, // enable for all datasets
+                    datasets: {
+                        line: {
+                            pointRadius: 4 // disable for all `'line'` datasets
+                        }
+                    },
+                    tension: 0.18,
+                }
+            });
+            const vchartKepengurusan = new Chart(document.getElementById('chartKepengurusan'), {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: chartKepengurusan.data,
+                        label: 'Jumlah Pengurus'
+                    }],
+                    labels: chartKepengurusan.labels
                 },
-                responsive: true,
-                maintainAspectRatio: false,
-                spanGaps: true, // enable for all datasets
-                datasets: {
-                    line: {
-                        pointRadius: 4 // disable for all `'line'` datasets
+                options: {
+                    scales: {},
+                    elements: {
+                        arc: {
+                            borderWidth: 4
+                        }
                     }
-                },
-                tension: 0.18,
-            }
-        });
+                }
+            });
+            @this.on('ubahDataBerhasil', receivedData => {
+                var chartKegiatan = receivedData[0].chartKegiatan;
+                var chartPeminjaman = receivedData[0].chartPeminjaman;
+                var chartKepengurusan = receivedData[0].chartKepengurusan;
 
-        new Chart(document.getElementById('chartKepengurusan'), {
-            type: 'pie',
-            data: {
-                datasets: [{
-                    data: chartKepengurusan.data,
-                    label: 'Jumlah Pengurus'
-                }],
-                labels: chartKepengurusan.labels
-            },
-            options: {
-                scales: {},
-                elements: {
-                    arc: {
-                        borderWidth: 4
-                    }
-                }
-            }
+                // Update chartKegiatan
+                vchartKegiatan.data.labels = chartKegiatan.labels;
+                vchartKegiatan.data.datasets.forEach((dataset) => {
+                    dataset.data = chartKegiatan.data;
+                });
+                vchartKegiatan.update();
+
+                // Update chartPeminjaman
+                vchartPeminjaman.data.datasets.forEach((dataset, index) => {
+                    dataset.data = chartPeminjaman[index].data;
+                });
+                vchartPeminjaman.update();
+
+                // Update chartKepengurusan
+                vchartKepengurusan.data.labels = chartKepengurusan.labels;
+                vchartKepengurusan.data.datasets.forEach((dataset) => {
+                    dataset.data = chartKepengurusan.data;
+                });
+                vchartKepengurusan.update();
+            });
+
         });
     </script>
 </div>

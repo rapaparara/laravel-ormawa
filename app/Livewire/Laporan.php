@@ -11,11 +11,12 @@ use App\Models\periode;
 use App\Models\tahapan_kegiatan as ModelsTahapan;
 use App\Models\users_kemahasiswaan as ModelsKemahasiswaan;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Laporan extends Component
 {
-    public $byOrmawa,$periode_id;
+    public $byOrmawa, $periode_id;
     protected function getKeaktifanOrmawaByPeriode($fakultas_id, $periode_id)
     {
         // Inisialisasi total untuk setiap jenis data
@@ -108,7 +109,6 @@ class Laporan extends Component
 
         return $result;
     }
-
     protected function getKeaktifanOrmawa($fakultas_id)
     {
         // Hitung total kegiatan untuk setiap ormawa
@@ -168,14 +168,10 @@ class Laporan extends Component
         $result = $result->values()->all();
         return $result;
     }
-
-    public function render()
+    protected function getChartData($fakultas_id)
     {
-        $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
-        $fakultas_id = $fakultas[0]->fakultas_id;
-        // Data untuk filter
+        $data = [];
         $data['dataOrmawa'] = ModelsOrmawa::where('fakultas_id', $fakultas_id)->get();
-        $data['dataPeriode'] = periode::get();
         // Data Kegiatan
         $data_kegiatan = ModelsKegiatan::selectRaw('COUNT(*) AS data, MAX(ormawas.name) AS labels, kegiatans.ormawa_id')
             ->join('ormawas', 'kegiatans.ormawa_id', '=', 'ormawas.id')
@@ -236,14 +232,131 @@ class Laporan extends Component
             $chartKepengurusan['labels'][] = $pengurus['labels'];
             $chartKepengurusan['data'][] = $pengurus['data'];
         }
-        if(isset($this->periode_id)){
-            if($this->periode_id !== ''){
-                $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawaByPeriode($fakultas_id, $this->periode_id);
-            } else $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawa($fakultas_id);
-        } else $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawa($fakultas_id);
         $data['chartKepengurusan'] = $chartKepengurusan;
         $data['chartPeminjaman'] = array_values($ormawa_data);
         $data['chartKegiatan'] = $chartKegiatan;
+        return $data;
+    }
+    protected function getChartDataByPeriode($fakultas_id, $periode_id)
+    {
+        $data = [];
+        $data['dataOrmawa'] = ModelsOrmawa::where('fakultas_id', $fakultas_id)->get();
+
+        // Data Kegiatan
+        $data_kegiatan = ModelsKegiatan::selectRaw('COUNT(*) AS data, MAX(ormawas.name) AS labels, kegiatans.ormawa_id')
+            ->join('ormawas', 'kegiatans.ormawa_id', '=', 'ormawas.id')
+            ->join(DB::raw("(SELECT id, name FROM ormawas WHERE fakultas_id = $fakultas_id) as filtered_ormawas"), function ($join) {
+                $join->on('ormawas.id', '=', 'filtered_ormawas.id');
+            })
+            ->join('periode_kepengurusans', 'kegiatans.kepengurusan_id', '=', 'periode_kepengurusans.id')
+            ->join('periodes', 'periode_kepengurusans.periode_id', '=', 'periodes.id')
+            ->where('periodes.id', $periode_id)
+            ->groupBy('kegiatans.ormawa_id')
+            ->orderBy('ormawas.id')
+            ->get()
+            ->toArray();
+
+        $chartKegiatan = [
+            'labels' => array_column($data_kegiatan, 'labels'),
+            'data' => array_column($data_kegiatan, 'data'),
+        ];
+
+        // Data Peminjaman Fasilitas
+        $data_peminjaman = ModelsPeminjaman::whereHas('ormawa.periodeKepengurusan', function ($query) use ($fakultas_id, $periode_id) {
+            $query->where('periode_id', $periode_id);
+        })
+            ->whereHas('ormawa', function ($query) use ($fakultas_id) {
+                $query->where('fakultas_id', $fakultas_id);
+            })
+            ->where('status', 'setujui')
+            ->selectRaw('MONTH(waktu_mulai) AS bulan, COUNT(*) AS jumlah, ormawa_id')
+            ->groupBy('bulan', 'ormawa_id')
+            ->orderBy('ormawa_id')
+            ->get();
+
+        $ormawa_data = [];
+        foreach ($data['dataOrmawa'] as $key => $value) {
+            if ($value->fakultas_id == $fakultas_id) {
+                $ormawa_data[$value->id] = [
+                    'name' => $value->name,
+                    'data' => array_fill(0, 12, 0), // Inisialisasi dengan 0 untuk setiap bulan
+                ];
+            }
+        }
+
+        foreach ($data_peminjaman as $peminjaman) {
+            if (array_key_exists($peminjaman->ormawa_id, $ormawa_data)) {
+                $ormawa_data[$peminjaman->ormawa_id]['data'][$peminjaman->bulan - 1] += $peminjaman->jumlah;
+            }
+        }
+
+        // Ambil data pengurus
+        $data_pengurus = ModelsPengurus::join('periode_kepengurusans', 'penguruses.kepengurusan_id', '=', 'periode_kepengurusans.id')->join('ormawas', 'periode_kepengurusans.ormawa_id', '=', 'ormawas.id')->join('fakultas', 'ormawas.fakultas_id', '=', 'fakultas.id')->where('fakultas_id', $fakultas_id)->orderBy('ormawas.id')->selectRaw('COUNT(*) AS total_pengurus, ormawas.name AS ormawa_name')->groupBy('ormawas.name')->get();
+
+        $chartKepengurusan = [
+            'labels' => [],
+            'data' => [],
+        ];
+        foreach ($data_pengurus as $pengurus) {
+            // Ambil nilai total_pengurus dan ormawa_name dari objek pengurus
+            $total_pengurus = $pengurus->total_pengurus;
+            $ormawa_name = $pengurus->ormawa_name;
+
+            // Tambahkan nilai ke chartKepengurusan
+            $chartKepengurusan['labels'][] = $ormawa_name;
+            $chartKepengurusan['data'][] = $total_pengurus;
+        }
+
+        $data['chartKepengurusan'] = $chartKepengurusan;
+        $data['chartPeminjaman'] = array_values($ormawa_data);
+        $data['chartKegiatan'] = $chartKegiatan;
+
+        return $data;
+    }
+    protected $listeners = ['ubahData' => 'changeData'];
+    public function changeData()
+    {
+        $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
+        $fakultas_id = $fakultas[0]->fakultas_id;
+        // Data untuk filter
+        $data['dataPeriode'] = periode::get();
+        if (isset($this->periode_id)) {
+            if ($this->periode_id !== '') {
+                $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawaByPeriode($fakultas_id, $this->periode_id);
+            } else {
+                $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawa($fakultas_id);
+            }
+        } else {
+            $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawa($fakultas_id);
+        }
+
+        if (isset($this->periode_id)) {
+            if ($this->periode_id !== '') {
+                $data += $this->getChartDataByPeriode($fakultas_id, $this->periode_id);
+            } else {
+                $data += $this->getChartData($fakultas_id);
+            }
+        } else {
+            $data += $this->getChartData($fakultas_id);
+        }
+        $this->dispatch('ubahDataBerhasil', $data);
+    }
+    public function render()
+    {
+        $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
+        $fakultas_id = $fakultas[0]->fakultas_id;
+        // Data untuk filter
+        $data['dataPeriode'] = periode::get();
+        if (isset($this->periode_id)) {
+            if ($this->periode_id !== '') {
+                $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawaByPeriode($fakultas_id, $this->periode_id);
+            } else {
+                $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawa($fakultas_id);
+            }
+        } else {
+            $data['keaktifanOrmawa'] = $this->getKeaktifanOrmawa($fakultas_id);
+        }
+        $data += $this->getChartData($fakultas_id);
         return view('livewire.laporan', $data);
     }
 }
