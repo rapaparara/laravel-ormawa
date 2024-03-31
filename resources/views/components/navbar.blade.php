@@ -19,7 +19,7 @@
                         <span class="sr-only">Open user menu</span>
                         <img class="w-10 h-10 rounded-full" src="{{ asset('avatar.png') }}" alt="{{ session('username') }}">
                     </button>
-                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
+                    <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg">
                         <div class="px-4 py-3">
                             <span class="block text-sm text-gray-900 dark:text-white">{{ session('name') }}</span>
                             <span class="block text-sm text-gray-500 truncate dark:text-gray-400">{{ session('username') }}</span>

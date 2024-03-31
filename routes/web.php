@@ -22,6 +22,8 @@ Route::prefix('admin')->middleware(IsAdmin::class)->group(function () {
           Route::get('/fakultas', \App\Livewire\Admin\Fakultas::class)->name('admin.fakultas');
           Route::get('/kemahasiswaan', \App\Livewire\Admin\Kemahasiswaan::class)->name('admin.kemahasiswaan');
           Route::get('/periode', \App\Livewire\Admin\Periode::class)->name('admin.periode');
+          Route::get('/kegiatan', \App\Livewire\Admin\Kegiatan::class)->name('admin.kegiatan');
+          Route::get('/laporan', \App\Livewire\Admin\Laporan::class)->name('admin.laporan');
 });
 Route::prefix('kemahasiswaan')->middleware(IsKemahasiswaan::class)->group(function () {
           Route::get('/', \App\Livewire\Kemahasiswaan\Index::class)->name('kemahasiswaan.index');

@@ -183,13 +183,17 @@ class Kegiatan extends Component
             $this->ormawa_id = (ModelsUsersOrmawa::where('user_id', session('user_id'))->get('ormawa_id'))[0]->ormawa_id;
             $data_kepengurusan = ModelsKepengurusan::orderBy('id')->where('status', 'setujui')->where('ormawa_id', $this->ormawa_id)->paginate(10);
             $data_kegiatan = ModelsKegiatan::orderBy('updated_at', 'desc')->where('ormawa_id', $this->ormawa_id)->paginate(10);
-        } else {
+        } elseif(session('user_role') == 'kemahasiswaan') {
             $fakultas = ModelsKemahasiswaan::where('user_id', session('user_id'))->get('fakultas_id');
             $fakultas_id = $fakultas[0]->fakultas_id;
             $data_kegiatan = ModelsKegiatan::whereHas('ormawa', function ($query) use ($fakultas_id) {
                 $query->where('fakultas_id', $fakultas_id);
             })
                 ->orderBy('updated_at', 'desc')
+                ->paginate(10);
+            $data_kepengurusan = '';
+        } else {
+            $data_kegiatan = ModelsKegiatan::orderBy('updated_at', 'desc')
                 ->paginate(10);
             $data_kepengurusan = '';
         }

@@ -32,6 +32,14 @@
             <a href="{{ route('admin.periode') }}"
                 class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Periode</a>
         </li>
+        <li>
+            <a href="{{ route('admin.kegiatan') }}"
+                class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Kegiatan</a>
+        </li>
+        <li>
+            <a href="{{ route('admin.laporan') }}"
+                class="block py-2 px-3 text-slate-50 rounded transition-colors duration-300 hover:text-indigo-400  md:p-0">Laporan</a>
+        </li>
     @endif
     @if (session('user_role') == 'kemahasiswaan')
         <li>
