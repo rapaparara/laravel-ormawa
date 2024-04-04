@@ -39,7 +39,7 @@
                                     d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
                             </svg>
                             <span class="text-base font-normal leading-tight text-gray-600 ms-2">
-                                Total Kegiatan 
+                                Total Kegiatan
                             </span>
                             <span
                                 class="ms-auto p-1 text-md font-bold leading-tight text-slate-50 bg-blue-700 rounded-md shadow-md">
@@ -97,12 +97,12 @@
                     <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
                         Kegiatan
                     </h5>
-                    <button
+                    <a href="{{ route('laporan.kegiatan.admin') }}"
                         class="ms-auto py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                        type="button">
+                        role="button">
                         <i class="me-2 fa-solid fa-download"></i>Download
+                    </a>
                 </div>
-                </button>
                 <canvas id="chartKegiatan"></canvas>
             </div>
             <div class="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 ">
@@ -110,10 +110,11 @@
                     <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
                         Kepengurusan
                     </h5>
-                    <button
+                    <a href="{{ route('laporan.kepengurusan.admin') }}"
                         class="ms-auto py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                        type="button">
+                        role="button">
                         <i class="me-2 fa-solid fa-download"></i>Download
+                    </a>
                 </div>
                 <canvas id="chartKepengurusan" class=""></canvas>
             </div>
@@ -122,10 +123,11 @@
                     <h5 class="mb-2 text-lg font-semibold tracking-tight text-indigo-800 dark:text-white">Laporan
                         Peminjamaan Fasilitas
                     </h5>
-                    <button
+                    <a href="{{ route('laporan.peminjaman.admin') }}"
                         class="ms-auto py-1 px-2 rounded-lg bg-green-500 text-white text-sm font-semibold  hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-sm"
-                        type="button">
+                        role="button">
                         <i class="me-2 fa-solid fa-download"></i>Download
+                    </a>
                 </div>
                 <div class="h-80">
                     <canvas wire:ignore.self id="chartPeminjaman"></canvas>

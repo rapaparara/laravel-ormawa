@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\logout;
+use App\Http\Controllers\PdfController;
 use App\Http\Middleware\IsAdmin;
 use App\Http\Middleware\IsKemahasiswaan;
 use App\Http\Middleware\IsMahasiswa;
@@ -41,5 +42,14 @@ Route::prefix('mahasiswa')->middleware(IsMahasiswa::class)->group(function () {
           Route::get('/kegiatan', \App\Livewire\Mahasiswa\Kegiatan::class)->name('mahasiswa.kegiatan');
           Route::get('/laporan', \App\Livewire\Mahasiswa\Laporan::class)->name('mahasiswa.laporan');
 });
+
+    Route::get('/laporan/kegiatan',[PdfController::class, 'laporanKegiatan'])->middleware(IsAdmin::class)->name('laporan.kegiatan.admin');
+    Route::get('/laporan/kepengurusan',[PdfController::class, 'laporanKepengurusan'])->middleware(IsAdmin::class)->name('laporan.kepengurusan.admin');
+    Route::get('/laporan/peminjaman',[PdfController::class, 'laporanPeminjaman'])->middleware(IsAdmin::class)->name('laporan.peminjaman.admin');
+
+    
+    Route::get('/laporan/kegiatan',[PdfController::class, 'laporanKegiatan'])->middleware(IsKemahasiswaan::class)->name('laporan.kegiatan');
+    Route::get('/laporan/kepengurusan',[PdfController::class, 'laporanKepengurusan'])->middleware(IsKemahasiswaan::class)->name('laporan.kepengurusan');
+    Route::get('/laporan/peminjaman',[PdfController::class, 'laporanPeminjaman'])->middleware(IsKemahasiswaan::class)->name('laporan.peminjaman');
 
 Route::get('/logout', [logout::class, 'logout'])->name('logout');

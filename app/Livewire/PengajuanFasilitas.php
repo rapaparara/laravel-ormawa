@@ -13,12 +13,19 @@ class PengajuanFasilitas extends Component
     #[Rule(['required', 'string', 'min:2'])]
     public $status = '';
     public $id = '';
+    
+    public $embed_file_surat;
     #[On('edit-task')]
     public function ganti($id)
     {
         $data = ModelsPeminjaman::findOrFail($id);
         $this->id = $data->id;
         $this->status = $data->status;
+    }
+    
+    public function lihat($file_surat)
+    {
+        $this->embed_file_surat = $file_surat;
     }
 
     public function update()

@@ -123,7 +123,7 @@
                 </div>
             </div>
         </div>
-        @livewire('pengajuan-fasilitas');
+        {{-- @livewire('pengajuan-fasilitas'); --}}
 
         <!-- Modal Form -->
         <div wire:ignore.self id="tambah-modal" tabindex="-1" aria-hidden="true"
