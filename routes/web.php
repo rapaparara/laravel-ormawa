@@ -43,9 +43,9 @@ Route::prefix('mahasiswa')->middleware(IsMahasiswa::class)->group(function () {
           Route::get('/laporan', \App\Livewire\Mahasiswa\Laporan::class)->name('mahasiswa.laporan');
 });
 
-    Route::get('/laporan/kegiatan',[PdfController::class, 'laporanKegiatan'])->middleware(IsAdmin::class)->name('laporan.kegiatan.admin');
-    Route::get('/laporan/kepengurusan',[PdfController::class, 'laporanKepengurusan'])->middleware(IsAdmin::class)->name('laporan.kepengurusan.admin');
-    Route::get('/laporan/peminjaman',[PdfController::class, 'laporanPeminjaman'])->middleware(IsAdmin::class)->name('laporan.peminjaman.admin');
+    Route::get('/laporan/kegiatan/admin',[PdfController::class, 'laporanKegiatan'])->middleware(IsAdmin::class)->name('laporan.kegiatan.admin');
+    Route::get('/laporan/kepengurusan/admin',[PdfController::class, 'laporanKepengurusan'])->middleware(IsAdmin::class)->name('laporan.kepengurusan.admin');
+    Route::get('/laporan/peminjaman/admin',[PdfController::class, 'laporanPeminjaman'])->middleware(IsAdmin::class)->name('laporan.peminjaman.admin');
 
     
     Route::get('/laporan/kegiatan',[PdfController::class, 'laporanKegiatan'])->middleware(IsKemahasiswaan::class)->name('laporan.kegiatan');
