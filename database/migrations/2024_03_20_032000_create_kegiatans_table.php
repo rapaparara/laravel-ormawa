@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('kepengurusan_id')->references('id')->on('periode_kepengurusans');
             $table->string('name');
             $table->longText('deskripsi');
+            $table->enum('type', ['proker', 'nonproker']);
             $table->date('waktu_mulai');
             $table->date('waktu_selesai');
             $table->text('image')->nullable();

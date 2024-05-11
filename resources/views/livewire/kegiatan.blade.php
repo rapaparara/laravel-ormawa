@@ -31,6 +31,9 @@
                                     Nama Ormawa
                                 </th>
                                 <th scope="col" class="md:max-w-md px-3 py-2">
+                                    Tipe Kegiatan
+                                </th>
+                                <th scope="col" class="md:max-w-md px-3 py-2">
                                     Deskripsi
                                 </th>
                                 <th scope="col" class="px-3 py-2">
@@ -57,6 +60,19 @@
                                     </td>
                                     <td class="px-3 py-2">
                                         {{ $value->ormawa->name }}
+                                    </td>
+                                    <td class="px-3 py-2">
+                                        @switch($value->type)
+                                            @case('proker')
+                                                Program Kerja
+                                            @break
+
+                                            @case('nonproker')
+                                                Non-Program Kerja
+                                            @break
+
+                                            @default
+                                        @endswitch
                                     </td>
                                     <td class="md:max-w-md px-3 py-2">
                                         {{ mb_strlen($value->deskripsi, 'UTF-8') > 180 ? mb_substr($value->deskripsi, 0, 180, 'UTF-8') . '...' : $value->deskripsi }}
@@ -153,6 +169,20 @@
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                     placeholder="Masukkan nama kegiatan" required />
                                 @error('name')
+                                    <small class="text-red-600 font-medium">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="type"
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pilih
+                                    Tipe Kegiatan</label>
+                                <select wire:model="type" id="type"
+                                    class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                    <option value="">Pilih Tipe Kegiatan</option>
+                                    <option value="proker">Program Kerja</option>
+                                    <option value="nonproker">Non-Program Kerja</option>
+                                </select>
+                                @error('type')
                                     <small class="text-red-600 font-medium">{{ $message }}</small>
                                 @enderror
                             </div>

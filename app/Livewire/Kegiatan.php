@@ -13,7 +13,7 @@ use Livewire\WithPagination;
 
 class Kegiatan extends Component
 {
-    public $kepengurusan_id, $ormawa_id, $name, $deskripsi, $waktu_mulai, $waktu_selesai, $image, $temp_image, $id;
+    public $kepengurusan_id, $ormawa_id, $name, $deskripsi, $waktu_mulai, $waktu_selesai, $image, $temp_image, $id,$type;
 
     public $showModal = false;
     public $editModal = false;
@@ -26,6 +26,7 @@ class Kegiatan extends Component
         $this->validate([
             'kepengurusan_id' => ['required'],
             'name' => ['required', 'string', 'min:5', 'max:255'],
+            'type' => ['required'],
             'deskripsi' => [
                 'required', 'string', 'min:20',
                 function ($attribute, $value, $fail) {
@@ -87,6 +88,7 @@ class Kegiatan extends Component
             'kepengurusan_id' => $this->kepengurusan_id,
             'ormawa_id' => $this->ormawa_id,
             'name' => $this->name,
+            'type' => $this->type,
             'deskripsi' => $this->deskripsi,
             'waktu_mulai' => $this->waktu_mulai,
             'waktu_selesai' => $this->waktu_selesai,
@@ -104,6 +106,7 @@ class Kegiatan extends Component
         $this->kepengurusan_id = $data->kepengurusan_id;
         $this->ormawa_id = $data->ormawa_id;
         $this->name = $data->name;
+        $this->type = $data->type;
         $this->deskripsi = $data->deskripsi;
         $this->waktu_mulai = $data->waktu_mulai;
         $this->waktu_selesai = $data->waktu_selesai;
@@ -116,6 +119,7 @@ class Kegiatan extends Component
             $data_kegiatan->update([
                 'kepengurusan_id' => $this->kepengurusan_id,
                 'name' => $this->name,
+                'type' => $this->type,
                 'deskripsi' => $this->deskripsi,
                 'waktu_mulai' => $this->waktu_mulai,
                 'waktu_selesai' => $this->waktu_selesai,
@@ -128,6 +132,7 @@ class Kegiatan extends Component
             $data_kegiatan->update([
                 'kepengurusan_id' => $this->kepengurusan_id,
                 'name' => $this->name,
+                'type' => $this->type,
                 'deskripsi' => $this->deskripsi,
                 'waktu_mulai' => $this->waktu_mulai,
                 'waktu_selesai' => $this->waktu_selesai,
@@ -170,6 +175,7 @@ class Kegiatan extends Component
         $this->kepengurusan_id = '';
         $this->ormawa_id = '';
         $this->name = '';
+        $this->type = '';
         $this->deskripsi = '';
         $this->waktu_mulai = '';
         $this->waktu_selesai = '';

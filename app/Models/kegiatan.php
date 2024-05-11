@@ -14,6 +14,7 @@ class kegiatan extends Model
         'kepengurusan_id',
         'name',
         'deskripsi',
+        'type',
         'waktu_mulai',
         'waktu_selesai',
         'image',
