@@ -8,8 +8,10 @@
     </title>
     <link rel="icon" href="{{ asset('logo_ung.png') }}">
     @vite('resources/css/app.css')
+    {{-- @livewireScripts --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-200">
@@ -32,11 +34,11 @@
                 <ul
                     class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                     <li>
-                        <a wire:navigate href="{{ route('home.fasilitas') }}"
+                        <a href="{{ route('home.fasilitas') }}"
                             class="hover:underline me-4 md:me-6">Fasilitas</a>
                     </li>
                     <li>
-                        <a wire:navigate href="{{ route('home.kegiatan') }}" class="hover:underline">Kegiatan Ormawa</a>
+                        <a href="{{ route('home.kegiatan') }}" class="hover:underline">Kegiatan Ormawa</a>
                     </li>
                 </ul>
             </div>
@@ -47,7 +49,6 @@
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
 </body>
 
 </html>

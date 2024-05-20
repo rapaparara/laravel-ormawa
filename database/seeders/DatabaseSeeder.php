@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\fakultas;
+use App\Models\User;
+use App\Models\users_kemahasiswaan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +16,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Menjalankan seeder untuk tabel Users
+        $this->call(UserSeeder::class);
+        // Menjalankan seeder untuk tabel Fakultas
+        $this->call(FakultasSeeder::class);
+        // Menjalankan seeder untuk tabel UsersKemahasiswaan
+        $this->call(users_kemahasiswaanSeeder::class);
     }
 }

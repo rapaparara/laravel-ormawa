@@ -57,7 +57,16 @@
                                     {{ $value->username }}
                                 </td>
                                 <td class="px-3 py-2">
-                                    {{ $value->role }}
+                                    @switch($value->role)
+                                        @case('admin')
+                                            Kemahasiswaan Universitas
+                                            @break
+                                        @case('kemahasiswaan')
+                                        Kemahasiswaan Fakultas
+                                            @break
+                                        @default
+                                    @endswitch
+                                    
                                 </td>
                                 <td class="px-3 py-2">
                                     <div class="flex flex-wrap">
@@ -164,8 +173,8 @@
                         <select wire:model="form.role" id="role"
                             class="bg-gray-50 border border-gray-300 text-gray-700 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option value="">Pilih Role</option>
-                            <option value="admin">Admin</option>
-                            <option value="kemahasiswaan">Kemahasiswaan</option>
+                            <option value="admin">Kemahasiswaan Universitas</option>
+                            <option value="kemahasiswaan">Kemahasiswaan Fakultas</option>
                         </select>
                         @error('form.role')
                             <small class="text-red-600 font-medium">{{ $message }}</small>

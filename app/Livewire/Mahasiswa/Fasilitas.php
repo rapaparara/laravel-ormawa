@@ -10,6 +10,7 @@ use App\Models\peminjaman_fasilitas as ModelsPeminjaman;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Fasilitas extends Component
@@ -17,9 +18,11 @@ class Fasilitas extends Component
     #[Title('Peminjaman Fasilitas')]
     public formFasilitasMahasiswa $form;
     use WithPagination;
+    use WithFileUploads;
     protected $paginationTheme = 'simple-tailwind';
     public $showModal = false;
     public $editModal = false;
+    public $embed_file_surat;
 
     public function save()
     {
@@ -30,6 +33,11 @@ class Fasilitas extends Component
     {
         $this->editModal = true;
         $this->form->edit($id);
+    }
+    public function lihat($file_surat)
+    {
+        $this->editModal = true;
+        $this->embed_file_surat = $file_surat;
     }
     public function update()
     {

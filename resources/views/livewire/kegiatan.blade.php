@@ -30,7 +30,7 @@
                                 <th scope="col" class="px-3 py-2">
                                     Nama Ormawa
                                 </th>
-                                <th scope="col" class="px-3 py-2">
+                                <th scope="col" class="md:max-w-md px-3 py-2">
                                     Deskripsi
                                 </th>
                                 <th scope="col" class="px-3 py-2">
@@ -59,7 +59,7 @@
                                         {{ $value->ormawa->name }}
                                     </td>
                                     <td class="md:max-w-md px-3 py-2">
-                                        {{ str_word_count($value->deskripsi) > 60 ? substr($value->deskripsi, 0, 180) . '...' : $value->deskripsi }}
+                                        {{ mb_strlen($value->deskripsi, 'UTF-8') > 180 ? mb_substr($value->deskripsi, 0, 180, 'UTF-8') . '...' : $value->deskripsi }}
                                     </td>
                                     <td class="px-3 py-2">
                                         {{ \Carbon\Carbon::parse($value->waktu_mulai)->isoFormat('D MMMM YYYY', 'Do MMMM YYYY') }}
@@ -94,6 +94,8 @@
                     </div>
                 </div>
             </div>
+
+            @livewire('tahapan-kegiatan')
         </div>
 
         @if (session('user_role') == 'mahasiswa')
@@ -164,23 +166,27 @@
                                 @error('deskripsi')
                                     <small class="text-red-600 font-medium">{{ $message }}</small>
                                 @enderror
+                                <p class="mt-1
+                            text-sm text-gray-500 dark:text-gray-300"
+                                    id="file_input_help">Deskripsi minimal 20 karakter.</p>
                             </div>
                             <div>
                                 <label for="waktu_mulai"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waktu
                                     Mulai</label>
-
                                 <input wire:model="waktu_mulai" type="date"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required>
                                 @error('waktu_mulai')
                                     <small class="text-red-600 font-medium">{{ $message }}</small>
                                 @enderror
                             </div>
                             <div>
                                 <label for="waktu_selesai" class="block mb-2 text-sm font-medium text-gray-900">Waktu
-                                    Mulai</label>
+                                    Selesai</label>
                                 <input wire:model="waktu_selesai" type="date"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                    required>
                                 @error('waktu_selesai')
                                     <small class="text-red-600 font-medium">{{ $message }}</small>
                                 @enderror
@@ -201,7 +207,8 @@
                                     @enderror
                                 @else
                                     <input type="file" wire:model="image"
-                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none">
+                                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                                        accept="image/*" required>
                                     <p class="mt-1
                             text-sm text-gray-500 dark:text-gray-300"
                                         id="file_input_help">File JPG/JPEG (Maksimal

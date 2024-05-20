@@ -275,7 +275,7 @@
                                     Sedang mengupload file...</div>
                             </div>
                             <div class="w-full flex justify-center">
-                                <a href="/" class="font-medium text-lg text-indigo-800">Download Format
+                                <a href="/storage/file-import/format-upload-pengurus.xlsx" class="font-medium text-lg text-indigo-800">Download Format
                                     Disini</a>
                             </div>
                             <button type="submit"

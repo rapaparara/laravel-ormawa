@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('periode_kepengurusans', function (Blueprint $table) {
             $table->id();
-            $table->integer('periode_id');
-            $table->integer('ormawa_id');
-            $table->string('file_sk');
+            $table->unsignedBigInteger('periode_id');
+            $table->unsignedBigInteger('ormawa_id');
+            $table->foreign('periode_id')->references('id')->on('periodes');
+            $table->foreign('ormawa_id')->references('id')->on('ormawas');
+            $table->text('file_sk');
             $table->enum('status', ['belum', 'tolak', 'setujui']);
             $table->timestamps();
         });

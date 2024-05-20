@@ -75,7 +75,7 @@ class formPengguna extends Form
     public function deleteConfirm()
     {
         User::find($this->id)->delete();
-        flash('Pengguna berhasil dihapus.',  'bg-green-100 text-green-800');
+        flash('Pengguna berhasil dihapus.', 'bg-green-100 text-green-800');
         $this->reset();
     }
     public function clear()

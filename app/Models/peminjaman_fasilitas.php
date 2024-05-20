@@ -14,6 +14,7 @@ class peminjaman_fasilitas extends Model
         'ormawa_id',
         'waktu_mulai',
         'waktu_selesai',
+        'file_surat',
         'status',
     ];
     public function fasilitas(): BelongsTo

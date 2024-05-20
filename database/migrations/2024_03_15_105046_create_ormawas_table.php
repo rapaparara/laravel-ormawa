@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['hmps', 'hmj', 'ukf', 'sema']);
-            $table->integer('fakultas_id');
+            $table->unsignedBigInteger('fakultas_id');
+            $table->foreign('fakultas_id')->references('id')->on('fakultas');
             $table->timestamps();
         });
     }

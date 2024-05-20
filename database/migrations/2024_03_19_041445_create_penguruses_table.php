@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('nim');
             $table->string('nama');
-            $table->integer('kepengurusan_id');
+            $table->unsignedBigInteger('kepengurusan_id');
+            $table->foreign('kepengurusan_id')->references('id')->on('periode_kepengurusans');
             $table->timestamps();
         });
     }
